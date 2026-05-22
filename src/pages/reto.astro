@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import EventPage from '../components/EventPage';
+---
+
+<Layout title="Reto Guerreros Gym - Competencia en Equipos de 3">
+  <main>
+    <EventPage client:load />
+  </main>
+</Layout>
+
+<style>
+  main {
+    min-height: 100vh;
+    background-color: #030308;
+    position: relative;
+    overflow-x: hidden;
+  }
+</style>

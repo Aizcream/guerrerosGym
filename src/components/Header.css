@@ -1,0 +1,131 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 4rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  z-index: 50;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #d4d4d8;
+}
+
+.nav-link.active {
+  color: var(--accent-blue);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue-glow);
+}
+
+.nav-link-reto {
+  color: #FFC72C !important;
+  text-shadow: 0 0 8px rgba(255, 199, 44, 0.4);
+  font-weight: 700;
+  border: 1px solid rgba(255, 199, 44, 0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  background-color: rgba(255, 199, 44, 0.04);
+  transition: all 0.3s ease !important;
+}
+
+.nav-link-reto:hover {
+  color: #030308 !important;
+  background: linear-gradient(135deg, #FFC72C 0%, #D4AF37 100%);
+  border-color: #FFC72C;
+  box-shadow: 0 0 15px rgba(255, 199, 44, 0.5);
+  text-shadow: none;
+}
+
+.cta-button {
+  background: linear-gradient(90deg, #083BF7 0%, #3b82f6 100%);
+  color: white;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--accent-blue-glow);
+}
+
+.cta-button:hover {
+  background: linear-gradient(90deg, #062ad4 0%, #60a5fa 100%);
+  box-shadow: 0 6px 20px var(--accent-blue-glow);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .header-container {
+    padding: 1rem 2rem;
+  }
+  
+  .nav-links {
+    display: none; /* Se oculta en mÃ³vil por ahora */
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 1rem 1.5rem;
+  }
+  
+  .logo-img {
+    height: 40px;
+  }
+}
+

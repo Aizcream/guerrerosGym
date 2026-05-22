@@ -1,0 +1,136 @@
+﻿.whyus-section {
+  background-color: var(--bg-color);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 4rem;
+}
+
+.whyus-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  align-items: center;
+  min-height: 400px;
+}
+
+.whyus-image-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-height: 400px;
+}
+
+.whyus-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.2);
+}
+
+.whyus-gradient-overlay {
+  position: absolute;
+  top: 0;
+  right: -1px; /* Para evitar lÃ­neas finas */
+  bottom: 0;
+  width: 60%;
+  background: linear-gradient(to right, transparent, var(--bg-color));
+}
+
+.whyus-text-container {
+  padding: 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.whyus-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: white;
+}
+
+.whyus-desc {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.whyus-stats-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem 2rem;
+  padding: 2rem 4rem 2rem 2rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+/* LÃ­neas separadoras debajo de la primera fila */
+.stat-item:nth-child(1)::after,
+.stat-item:nth-child(2)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 90%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  line-height: 1;
+}
+
+.stat-star {
+  font-size: 2.5rem;
+  vertical-align: middle;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 1024px) {
+  .whyus-container {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  
+  .whyus-gradient-overlay {
+    background: linear-gradient(to bottom, transparent, var(--bg-color));
+    top: 50%;
+    left: 0;
+    width: 100%;
+  }
+
+  .whyus-text-container, .whyus-stats-container {
+    padding: 3rem 2rem;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .stat-item:nth-child(1)::after,
+  .stat-item:nth-child(2)::after {
+    left: 5%;
+  }
+}
+
