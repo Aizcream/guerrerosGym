@@ -455,7 +455,11 @@ function PendingPayment({
       <div className="pending-actions">
         <button
           className="btn-primary"
-          onClick={() => { window.location.href = data.checkout_url; }}
+          onClick={() => {
+            console.log('--- REINTENTO DE PAGO ---');
+            console.log('checkout_url guardada en LS:', data.checkout_url);
+            window.location.href = data.checkout_url;
+          }}
           style={{ textDecoration: 'none' }}
         >
           Reintentar pago <Icon.Arrow style={{ width: 16, height: 16 }} />
@@ -535,6 +539,9 @@ function RegistrationForm() {
       const result = await postInscripcion(payload);
       // Guardar ANTES de redirigir para poder recuperar si el pago falla
       guardarInscripcion(result, teamName);
+      console.log('--- DIAGNÓSTICO DE REDIRECCIÓN A WOMPI ---');
+      console.log('Respuesta completa de la API:', result);
+      console.log('checkout_url recibida:', result.checkout_url);
       setInscripcionCreada(result);
       window.location.href = result.checkout_url;
     } catch (err) {
