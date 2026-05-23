@@ -65,12 +65,17 @@ export interface InscripcionCreada {
 export type EstadoPago = 'pending' | 'processing' | 'completed' | 'cancelled' | 'failed' | string;
 
 export interface InscripcionEstado {
-  inscripcion_id: number;
-  order_id: number;
-  estado: EstadoPago;
+  id: string | number;
   nombre_equipo: string;
-  total_cop: number;
-  num_atletas: number;
+  email_contacto: string;
+  telefono_contacto: string;
+  monto_total_cop: string | number;
+  num_atletas: string | number;
+  estado: string;
+  order_id: string | number;
+  creado_en?: string;
+  actualizado_en?: string;
+  atletas?: any[];
 }
 
 // ---------------------------------------------------------------------------

@@ -7,6 +7,13 @@ import {
   type InscripcionEstado
 } from '../lib/inscripcionesApi';
 
+const formatCurrency = (val: any) => {
+  if (val === undefined || val === null) return '120.000';
+  const num = Number(val);
+  if (isNaN(num)) return String(val);
+  return num.toLocaleString('es-CO');
+};
+
 /* ============================================================
    ICONS
    ============================================================ */
@@ -291,19 +298,19 @@ export default function ConfirmationPage() {
           <div className="cp-details">
             <div className="cp-detail-row">
               <span className="cp-detail-label">Equipo</span>
-              <span className="cp-detail-value highlight">{estado.nombre_equipo}</span>
+              <span className="cp-detail-value highlight">{estado.nombre_equipo || 'Equipo'}</span>
             </div>
             <div className="cp-detail-row">
               <span className="cp-detail-label">Atletas inscritos</span>
-              <span className="cp-detail-value">{estado.num_atletas} integrantes</span>
+              <span className="cp-detail-value">{(Number(estado.num_atletas) || 3)} integrantes</span>
             </div>
             <div className="cp-detail-row">
               <span className="cp-detail-label">Total pagado</span>
-              <span className="cp-detail-value">${estado.total_cop.toLocaleString('es-CO')} COP</span>
+              <span className="cp-detail-value">${formatCurrency(estado.monto_total_cop)} COP</span>
             </div>
             <div className="cp-detail-row">
               <span className="cp-detail-label">Inscripción ID</span>
-              <span className="cp-detail-value">#{estado.inscripcion_id}</span>
+              <span className="cp-detail-value">#{estado.id ?? inscripcionId}</span>
             </div>
             {transactionId && (
               <div className="cp-detail-row">
@@ -318,7 +325,7 @@ export default function ConfirmationPage() {
               Volver a la página de inicio
             </a>
             <a
-              href={`https://wa.me/573222177207?text=Hola%20Guerreros%20Gym!%20Acabo%20de%20inscribir%20con%20exito%20a%20mi%20equipo%20${encodeURIComponent(estado.nombre_equipo)}%20(ID%20${estado.inscripcion_id}).`}
+              href={`https://wa.me/573222177207?text=Hola%20Guerreros%20Gym!%20Acabo%20de%20inscribir%20con%20exito%20a%20mi%20equipo%20${encodeURIComponent(estado.nombre_equipo || 'Equipo')}%20(ID%20${estado.id ?? inscripcionId}).`}
               target="_blank"
               rel="noreferrer"
               className="cp-btn-secondary"
@@ -370,7 +377,7 @@ export default function ConfirmationPage() {
           <div className="cp-details">
             <div className="cp-detail-row">
               <span className="cp-detail-label">Equipo</span>
-              <span className="cp-detail-value">{estado.nombre_equipo}</span>
+              <span className="cp-detail-value">{estado.nombre_equipo || 'Equipo'}</span>
             </div>
             <div className="cp-detail-row">
               <span className="cp-detail-label">Estado actual</span>
@@ -378,7 +385,7 @@ export default function ConfirmationPage() {
             </div>
             <div className="cp-detail-row">
               <span className="cp-detail-label">Inscripción ID</span>
-              <span className="cp-detail-value">#{estado.inscripcion_id}</span>
+              <span className="cp-detail-value">#{estado.id ?? inscripcionId}</span>
             </div>
           </div>
 
@@ -387,7 +394,7 @@ export default function ConfirmationPage() {
               <Icon.Refresh style={{ width: 16, height: 16 }} /> Actualizar estado
             </button>
             <a
-              href={`https://wa.me/573222177207?text=Hola%20Guerreros%20Gym!%20El%20pago%20de%20mi%20equipo%20${encodeURIComponent(estado.nombre_equipo)}%20(ID%20${estado.inscripcion_id})%20aparece%20como%20pendiente.%20Transaccion%3A%20${transactionId || 'Ninguna'}`}
+              href={`https://wa.me/573222177207?text=Hola%20Guerreros%20Gym!%20El%20pago%20de%20mi%20equipo%20${encodeURIComponent(estado.nombre_equipo || 'Equipo')}%20(ID%20${estado.id ?? inscripcionId})%20aparece%20como%20pendiente.%20Transaccion%3A%20${transactionId || 'Ninguna'}`}
               target="_blank"
               rel="noreferrer"
               className="cp-btn-secondary"
@@ -422,17 +429,17 @@ export default function ConfirmationPage() {
         <div className="cp-status-text">Transacción fallida</div>
 
         <p className="cp-message">
-          Lo sentimos, la pasarela de pagos no pudo procesar tu transacción. El estado devuelto es: <strong>{estado.estado.toLowerCase()}</strong>. Ningún cargo ha sido confirmado.
+          Lo sentimos, la pasarela de pagos no pudo procesar tu transacción. El estado devuelto es: <strong>{String(estado.estado || 'error').toLowerCase()}</strong>. Ningún cargo ha sido confirmado.
         </p>
 
         <div className="cp-details">
           <div className="cp-detail-row">
             <span className="cp-detail-label">Equipo</span>
-            <span className="cp-detail-value">{estado.nombre_equipo}</span>
+            <span className="cp-detail-value">{estado.nombre_equipo || 'Equipo'}</span>
           </div>
           <div className="cp-detail-row">
             <span className="cp-detail-label">Inscripción ID</span>
-            <span className="cp-detail-value">#{estado.inscripcion_id}</span>
+            <span className="cp-detail-value">#{estado.id ?? inscripcionId}</span>
           </div>
           {transactionId && (
             <div className="cp-detail-row">
@@ -447,7 +454,7 @@ export default function ConfirmationPage() {
             Volver a intentar pago
           </a>
           <a
-            href={`https://wa.me/573222177207?text=Hola%20Guerreros%20Gym!%20El%20pago%20de%20mi%20equipo%20${encodeURIComponent(estado.nombre_equipo)}%20(ID%20${estado.inscripcion_id})%20fue%20rechazado.%20Ref%3A%20${transactionId || 'Ninguna'}`}
+            href={`https://wa.me/573222177207?text=Hola%20Guerreros%20Gym!%20El%20pago%20de%20mi%20equipo%20${encodeURIComponent(estado.nombre_equipo || 'Equipo')}%20(ID%20${estado.id ?? inscripcionId})%20fue%20rechazado.%20Ref%3A%20${transactionId || 'Ninguna'}`}
             target="_blank"
             rel="noreferrer"
             className="cp-btn-secondary"
