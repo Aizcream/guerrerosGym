@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ConfirmationPage from '../components/ConfirmationPage';
+---
+
+<Layout title="Confirmación de Inscripción - Reto Guerreros Gym">
+  <main>
+    <ConfirmationPage client:load />
+  </main>
+</Layout>
+
+<style>
+  main {
+    min-height: 100vh;
+    background-color: #050505;
+    position: relative;
+    overflow-x: hidden;
+    padding: 0;
+  }
+</style>

@@ -1,0 +1,372 @@
+/* ============================================================
+   CONFIRMATION PAGE STYLES — Sleek and High-Impact Dark Mode
+   ============================================================ */
+
+.cp-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #050505;
+  color: #ffffff;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Glows */
+.cp-glow-1 {
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cp-glow-2 {
+  position: absolute;
+  bottom: -20%;
+  right: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(160, 32, 240, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Card Container */
+.cp-card {
+  width: 100%;
+  max-width: 540px;
+  background: rgba(15, 15, 15, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 24px;
+  padding: 40px 32px;
+  text-align: center;
+  z-index: 10;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cp-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
+  border-radius: 24px 24px 0 0;
+}
+
+/* Status Colors & Classes */
+.cp-card.state-success {
+  border-color: rgba(0, 240, 255, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 240, 255, 0.05),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cp-card.state-success::before {
+  background: linear-gradient(90deg, transparent, oklch(0.85 0.18 200), transparent);
+}
+
+.cp-card.state-error {
+  border-color: rgba(229, 53, 53, 0.2);
+  box-shadow: 0 20px 50px rgba(229, 53, 53, 0.05),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cp-card.state-error::before {
+  background: linear-gradient(90deg, transparent, #e03535, transparent);
+}
+
+.cp-card.state-pending {
+  border-color: rgba(255, 179, 0, 0.2);
+  box-shadow: 0 20px 50px rgba(255, 179, 0, 0.05),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cp-card.state-pending::before {
+  background: linear-gradient(90deg, transparent, #ffb300, transparent);
+}
+
+/* Circular Badge Indicators */
+.cp-badge-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-badge {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+/* Success Badge */
+.state-success .cp-badge {
+  background: rgba(0, 240, 255, 0.05);
+  border-color: oklch(0.85 0.18 200);
+  color: oklch(0.85 0.18 200);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
+}
+
+.cp-pulse-ring {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid oklch(0.85 0.18 200);
+  opacity: 0;
+  animation: cp-ringPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* Error Badge */
+.state-error .cp-badge {
+  background: rgba(229, 53, 53, 0.05);
+  border-color: #e03535;
+  color: #e03535;
+  box-shadow: 0 0 25px rgba(229, 53, 53, 0.2);
+  animation: cp-shake 0.5s ease;
+}
+
+/* Pending Badge */
+.state-pending .cp-badge {
+  background: rgba(255, 179, 0, 0.05);
+  border-color: #ffb300;
+  color: #ffb300;
+  box-shadow: 0 0 25px rgba(255, 179, 0, 0.2);
+}
+
+.cp-loading-spinner {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 92px;
+  height: 92px;
+  border: 2px dashed #ffb300;
+  border-radius: 50%;
+  animation: cp-spin 10s linear infinite;
+}
+
+/* Typography & Content */
+.cp-team-name {
+  font-family: 'Anton', sans-serif;
+  font-size: 32px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  line-height: 1.1;
+}
+
+.state-success .cp-team-name {
+  text-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+.cp-status-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.state-success .cp-status-text {
+  color: oklch(0.85 0.18 200);
+  background: rgba(0, 240, 255, 0.07);
+}
+
+.state-error .cp-status-text {
+  color: #e03535;
+  background: rgba(229, 53, 53, 0.07);
+}
+
+.state-pending .cp-status-text {
+  color: #ffb300;
+  background: rgba(255, 179, 0, 0.07);
+}
+
+.cp-message {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #b0b0b0;
+  margin: 0 auto 30px auto;
+  max-width: 440px;
+}
+
+/* Details Table */
+.cp-details {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 24px 0;
+  margin-bottom: 35px;
+  text-align: left;
+}
+
+.cp-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.cp-detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.cp-detail-label {
+  font-size: 14px;
+  color: #6a6a6a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cp-detail-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cp-detail-value.highlight {
+  color: oklch(0.85 0.18 200);
+}
+
+/* Action Buttons */
+.cp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cp-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  font-family: 'Anton', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.state-success .cp-btn-primary {
+  background: oklch(0.85 0.18 200);
+  color: #050505;
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15);
+}
+
+.cp-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 240, 255, 0.25);
+}
+
+.state-success .cp-btn-primary:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+.cp-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'Anton', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 15px 28px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cp-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cp-btn-link {
+  font-size: 14px;
+  color: #6a6a6a;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.cp-btn-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes cp-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cp-ringPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes cp-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+  .cp-card {
+    padding: 30px 20px;
+  }
+  .cp-team-name {
+    font-size: 26px;
+  }
+}
