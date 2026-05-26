@@ -257,7 +257,7 @@ export default function ConfirmationPage() {
             const size = Math.random() * 8 + 4;
             const delay = Math.random() * 5;
             const duration = Math.random() * 3 + 2;
-            const colors = ['oklch(0.85 0.18 200)', '#a020f0', '#00f0ff', '#ffffff'];
+            const colors = ['#083BF7', '#a020f0', '#5c7cff', '#ffffff'];
             const bg = colors[Math.floor(Math.random() * colors.length)];
             return (
               <div

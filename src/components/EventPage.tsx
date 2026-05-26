@@ -126,7 +126,7 @@ const u = (id: string, w = 1400) =>
 
 const IMG = {
   // "Atleta posando" — hombre flexionando, vista desde abajo
-  hero: u('photo-1532029837206-abbe2b7620e3', 2000),
+  hero: '/Guerreros.png',
   fmtDate: u('photo-1571019613454-1cb2f99b2d8b', 900),
   fmtTeam: u('photo-1534258936925-c58bed479fcb', 900),
   fmtTime: u('photo-1518611012118-696072aa579a', 900),
@@ -445,7 +445,7 @@ function PendingPayment({
       )}
 
       {/* Estado después de verificar — pago aún pendiente */}
-      {checkResult && !['completed','processing'].includes(checkResult.estado) && (
+      {checkResult && !['completed', 'processing'].includes(checkResult.estado) && (
         <div style={{ marginTop: 16, padding: '12px 16px', background: 'color-mix(in srgb, var(--warm) 8%, var(--bg-3))', border: '1px solid color-mix(in srgb, var(--warm) 30%, var(--line-2))', borderRadius: 10, fontSize: 14, color: 'var(--ink-dim)' }}>
           Estado actual: <strong style={{ color: 'var(--warm)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{checkResult.estado}</strong> — si acabas de pagar, espera unos minutos y vuelve a verificar.
         </div>
@@ -685,8 +685,8 @@ function Nav() {
         <a href="#top" className="nav-logo">
           <img src={IMG.logo} alt="Guerreros Gym" />
           <div>
-            <div className="b1">Reto Guerreros Gym</div>
-            <div className="b2">Cucuta · 25 y 26 de junio</div>
+            <div className="b1">Guerreros Challenger</div>
+            <div className="b2">Edición Diamantes · 25 y 26 de Junio</div>
           </div>
         </a>
         <div className="nav-links">
@@ -735,7 +735,7 @@ function Hero() {
       <div className="hero-photo">
         <img src={IMG.hero} alt="Atletas en Guerreros Gym" style={{ objectPosition: '55% 30%' }} />
       </div>
-      <div className="hero-bg-glow" />
+      {/* <div className="hero-bg-glow" /> */}
 
       <div className="hero-wrap">
         <div className="hero-left">
@@ -746,11 +746,10 @@ function Hero() {
             <span>25 + 26 Junio · Cucuta</span>
           </div>
           <h1 className="display">
-            <span className="line small">Reto</span>
+            <span className="line small">Edición Diamantes</span>
             <span className="line accent">Guerreros</span>
             <span className="line gym">
-              <span className="gym-text">Gym</span>
-              <span className="gym-line" />
+              <span className="gym-text">Challenger</span>
             </span>
           </h1>
           <p className="hero-tagline">
@@ -805,32 +804,6 @@ function Hero() {
    FORMAT SECTION
    ============================================================ */
 function Format() {
-  const cards = [
-    {
-      tag: '01 / Fecha',
-      photo: IMG.fmtDate,
-      title: <>25<span style={{ color: 'var(--accent)' }}>·</span>26 <span className="big">Junio</span></>,
-      desc: 'Dos jornadas de competencia: eliminatorias el sábado y finales el domingo. Toda la energía concentrada en un fin de semana.',
-    },
-    {
-      tag: '02 / Equipos',
-      photo: IMG.fmtTeam,
-      title: <><span className="big">3</span> Mixtos</>,
-      desc: 'Tres atletas por equipo. Obligatorio al menos un hombre y una mujer — los equipos del mismo género no pasan filtro.',
-    },
-    {
-      tag: '03 / Duración',
-      photo: IMG.fmtTime,
-      title: <><span className="big">15</span> Minutos</>,
-      desc: 'Una sola ventana de 15 minutos por ronda. Sin descansos. Sin excusas. Estrategia, fuerza y resistencia al límite.',
-    },
-    {
-      tag: '04 / Intensidad',
-      photo: IMG.fmtIntense,
-      title: <><span className="big">∞</span> Funcional</>,
-      desc: 'Entrenamiento funcional puro. Movimientos compuestos, cardio y fuerza en circuito continuo, auditados por el staff de Guerreros.',
-    },
-  ];
   return (
     <section id="evento">
       <div className="wrap">
@@ -843,20 +816,6 @@ function Format() {
           Un formato directo y exigente diseñado para que cada segundo cuente. Equipos
           mixtos enfrentándose en pruebas funcionales auditadas por el staff de Guerreros Gym.
         </p>
-        <div className="format-grid">
-          {cards.map((c, i) => (
-            <div className="format-card" key={i}>
-              <div className="photo">
-                <span className="tag">{c.tag}</span>
-                <img src={c.photo} alt="" loading="lazy" />
-              </div>
-              <div className="body">
-                <h3>{c.title}</h3>
-                <p>{c.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -1045,7 +1004,7 @@ function Contact() {
         <footer className="ep-footer">
           <div>© 2026 Guerreros Gym · Cucuta</div>
           <div>Entrenamiento Funcional · Colombia</div>
-          <div>Reto Guerreros Gym 2026</div>
+          <div>Guerreros Challenger Edición Diamantes 2026</div>
         </footer>
       </div>
     </section>
@@ -1060,9 +1019,9 @@ export default function EventPage() {
     <div className="ep-root">
       <Nav />
       <Hero />
+      <Prizes />
       <Format />
       <VideoSection />
-      <Prizes />
       <Register />
       <Contact />
     </div>
