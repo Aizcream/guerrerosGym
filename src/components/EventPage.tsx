@@ -1275,7 +1275,7 @@ export default function EventPage() {
     <div className="ep-root">
       <Nav />
       <Hero />
-      <ScrollReveal><Countdown /></ScrollReveal>
+      <Countdown />
       <ScrollReveal><Prizes /></ScrollReveal>
       <ScrollReveal><Format /></ScrollReveal>
       <ScrollReveal><VideoSection /></ScrollReveal>

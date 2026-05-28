@@ -57,7 +57,7 @@
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow: clip;
 }
 
 .ep-root ::selection {
@@ -188,7 +188,7 @@
   height: calc(100svh - 73px);
   min-height: 720px;
   padding: 0;
-  overflow: hidden;
+  overflow: clip;
   isolation: isolate;
   display: flex;
   flex-direction: column;
@@ -238,7 +238,7 @@
   z-index: 2;
   max-width: var(--max);
   margin: 0 auto;
-  padding: 48px 36px 32px;
+  padding: 48px 36px 48px;
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 48px;
@@ -490,12 +490,13 @@
 @media (max-width: 1000px) {
   .ep-root .hero {
     height: auto;
-    min-height: 100vh;
+    min-height: 100svh;
+    overflow: clip;
   }
 
   .ep-root .hero-wrap {
     grid-template-columns: 1fr;
-    padding: 40px 24px;
+    padding: 40px 24px 48px;
   }
 
   .ep-root .hero-photo {
@@ -523,7 +524,6 @@
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--line);
   padding: 22px 0;
-  flex: 0 0 auto;
 }
 
 .ep-root .countdown-inner {
@@ -2163,35 +2163,4 @@
     padding: 4px 16px 20px !important;
   }
 }
-
-/* Sizing and positioning for desktop/mobile countdown views */
-.ep-root .hero-countdown-desktop {
-  display: none;
-}
-
-.ep-root .hero-countdown-mobile {
-  display: block;
-}
-
-@media (min-width: 1001px) {
-  .ep-root .hero-countdown-desktop {
-    display: block;
-    position: relative;
-    width: 100%;
-    z-index: 10;
-  }
-
-  .ep-root .hero-countdown-mobile {
-    display: none;
-  }
-
-  .ep-root .hero {
-    min-height: 840px !important;
-  }
-
-  .ep-root .hero-wrap {
-    padding-bottom: 48px !important;
-  }
-}
-
 
