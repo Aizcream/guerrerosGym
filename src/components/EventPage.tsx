@@ -96,6 +96,116 @@ function Crown({ color = 'currentColor', size = 36 }) {
   );
 }
 
+import { motion } from 'framer-motion';
+
+/* ============================================================
+   ANIMATED TEXT COMPONENT (Framer Motion Word-by-Word)
+   ============================================================ */
+interface AnimatedTextProps {
+  text: string;
+  className?: string;
+  delay?: number;
+  variant?: 'word' | 'char';
+}
+
+function AnimatedText({ text, className, delay = 0, variant = 'word' }: AnimatedTextProps) {
+  const items = variant === 'word' ? text.split(' ') : text.split('');
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: variant === 'word' ? 0.08 : 0.02,
+        delayChildren: delay,
+      },
+    },
+  };
+
+  const childVariants = {
+    visible: {
+      opacity: 1,
+      filter: 'blur(0px)',
+      y: 0,
+      transition: {
+        type: 'spring',
+        damping: 15,
+        stiffness: 120,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      filter: 'blur(8px)',
+      y: 15,
+    },
+  };
+
+  return (
+    <motion.span
+      style={{ display: 'inline-flex', flexWrap: 'wrap' }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className={className}
+    >
+      {items.map((item, index) => (
+        <motion.span
+          variants={childVariants}
+          style={{
+            display: 'inline-block',
+            marginRight: variant === 'word' ? '0.22em' : '0em',
+            whiteSpace: 'pre-wrap',
+          }}
+          key={index}
+        >
+          {item}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+}
+
+/* ============================================================
+   SCROLL REVEAL & STAGGER VARIANTS (Framer Motion)
+   ============================================================ */
+function ScrollReveal({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 35, filter: 'blur(8px)' }}
+      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+const staggerContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const staggerItemVariants = {
+  hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      type: 'spring',
+      damping: 15,
+      stiffness: 90,
+    },
+  },
+};
+
 /* ============================================================
    COUNTDOWN HOOK
    ============================================================ */
@@ -228,8 +338,18 @@ function MemberCard({ idx, data, errors, onChange, open, onToggle, complete }: M
       <div className="team-header" onClick={onToggle}>
         <div className="num">{String(idx + 1).padStart(2, '0')}</div>
         <div className="title">
-          <div className="t">{data.nombres ? data.nombres : `Atleta ${idx + 1}`}</div>
-          <div className="s">{complete ? 'Datos completos' : 'Toca para diligenciar'}</div>
+          <div className="t" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            {data.nombres ? data.nombres : `Atleta ${idx + 1}`}
+            {idx === 0 && (
+              <span className="captain-badge">
+                CAPITÁN
+              </span>
+            )}
+          </div>
+          <div className="s">
+            {idx === 0 ? 'Capitán del equipo · ' : ''}
+            {complete ? 'Datos completos' : 'Toca para diligenciar'}
+          </div>
         </div>
         <div className="status">
           {complete
@@ -652,9 +772,9 @@ function RegistrationForm() {
           ? <Icon.Check className="ic" style={{ width: 18, height: 18 }} />
           : <Icon.Alert className="ic" style={{ width: 18, height: 18 }} />}
         <div>
-          <strong style={{ fontFamily: 'Anton, sans-serif', fontSize: 14, letterSpacing: '0.14em', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
+          <span style={{ fontFamily: 'Anton, sans-serif', fontSize: 18, letterSpacing: '0.14em', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
             {genderOK ? 'Equipo mixto válido' : 'Regla obligatoria · equipo mixto'}
-          </strong>
+          </ span>
           {genderOK
             ? 'Tu equipo cumple con la regla: al menos un hombre y una mujer.'
             : 'Debe haber al menos un hombre y una mujer en el equipo.'}
@@ -700,7 +820,7 @@ function Nav() {
   return (
     <nav className="nav">
       <div className="nav-inner">
-        <a href="#top" className="nav-logo">
+        <a href="/" className="nav-logo">
           <img src={IMG.logo} alt="Guerreros Gym" />
           <div>
             <div className="b1">Guerreros Challenge</div>
@@ -708,6 +828,7 @@ function Nav() {
           </div>
         </a>
         <div className="nav-links">
+          <a href="/">Inicio</a>
           <a href="#evento">Evento</a>
           <a href="#video">Ejercicios</a>
           <a href="#premios">Premios</a>
@@ -748,72 +869,126 @@ function Countdown() {
    HERO
    ============================================================ */
 function Hero() {
+  const pillContainer = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+        delayChildren: 1.15,
+      },
+    },
+  };
+
+  const pillItem = {
+    hidden: { opacity: 0, y: 25, filter: 'blur(6px)' },
+    show: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        type: 'spring',
+        damping: 14,
+        stiffness: 100,
+      },
+    },
+  };
+
   return (
     <header className="hero" id="top">
-      <div className="hero-photo">
+      <motion.div 
+        className="hero-photo"
+        initial={{ opacity: 0, scale: 1.04 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+      >
         <img src={IMG.hero} alt="Atletas en Guerreros Gym" style={{ objectPosition: '55% 30%' }} />
-      </div>
+      </motion.div>
       {/* <div className="hero-bg-glow" /> */}
 
       <div className="hero-wrap">
         <div className="hero-left">
-          <div className="hero-meta">
+          <motion.div 
+            className="hero-meta"
+            initial={{ opacity: 0, filter: 'blur(8px)', y: 15 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            transition={{ type: 'spring', damping: 15, stiffness: 100, delay: 0.15 }}
+          >
             <span className="dot" />
             <span className="pre">Preventa abierta</span>
             <span className="sep" />
             <span>25 + 26 Junio · Cucuta</span>
-          </div>
-          <h1 className="display">
-            <span className="line accent">Guerreros</span>
-            <span className="line gym">
-              <span className="gym-text">Challenge</span>
+          </motion.div>
+          <h1 className="display" style={{ display: 'flex', flexDirection: 'column' }}>
+            <span className="line accent">
+              <AnimatedText text="Guerreros" delay={0.25} />
             </span>
-            <span className="line small">Edición Diamantes</span>
+            <span className="line gym">
+              <span className="gym-text">
+                <AnimatedText text="Challenge" delay={0.4} />
+              </span>
+            </span>
+            <span className="line small">
+              <AnimatedText text="Edición Diamantes" delay={0.55} />
+            </span>
           </h1>
-          <p className="hero-tagline">
-            Fuerza<span className="sep">.</span> Equipo<span className="sep">.</span> Disciplina<span className="sep">.</span> Gloria.
+          <p className="hero-tagline" style={{ display: 'block', minHeight: '28px' }}>
+            <AnimatedText text="Fuerza. Equipo. Disciplina. Gloria." delay={0.7} />
           </p>
-          <p className="hero-sub">
+          <motion.p
+            className="hero-sub"
+            initial={{ opacity: 0, filter: 'blur(8px)', y: 15 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.85 }}
+          >
             ¡No es solo fuerza, <strong>es trabajo en equipo!</strong> Demuestra de
             qué está hecho tu equipo en una competencia diseñada para atletas que
             viven el <strong>entrenamiento funcional</strong>.
-          </p>
-          <div className="hero-ctas">
+          </motion.p>
+          <motion.div 
+            className="hero-ctas"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: 'spring', damping: 15, stiffness: 90, delay: 1 }}
+          >
             <a href="#inscripcion" className="btn-primary">
               Inscribir mi equipo <Icon.Arrow style={{ width: 18, height: 18 }} />
             </a>
             <a href="#video" className="btn-ghost">
               <Icon.Play style={{ width: 14, height: 14, fill: 'currentColor' }} /> Ver ejercicios
             </a>
-          </div>
-          <div className="hero-pills">
-            <div className="hero-pill">
+          </motion.div>
+          <motion.div 
+            className="hero-pills"
+            variants={pillContainer}
+            initial="hidden"
+            animate="show"
+          >
+            <motion.div className="hero-pill" variants={pillItem}>
               <div className="ic"><Icon.Calendar /></div>
               <div>
                 <div className="k">Fechas</div>
                 <div className="v">25 y 26 de Junio</div>
               </div>
-            </div>
-            <div className="hero-pill">
+            </motion.div>
+            <motion.div className="hero-pill" variants={pillItem}>
               <div className="ic"><Icon.Clock /></div>
               <div>
                 <div className="k">Duración</div>
                 <div className="v">Tan solo 15 min</div>
               </div>
-            </div>
-            <div className="hero-pill">
+            </motion.div>
+            <motion.div className="hero-pill" variants={pillItem}>
               <div className="ic"><Icon.Users /></div>
               <div>
                 <div className="k">Equipos mixtos</div>
                 <div className="v">3 personas</div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
         <div className="hero-right" />
       </div>
-
-      <Countdown />
     </header>
   );
 }
@@ -911,7 +1086,7 @@ function VideoSection() {
                   autoPlay
                   playsInline
                   className="video-player"
-                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10, background: '#000', objectFit: 'contain' }}
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10, background: '#000', objectFit: 'cover' }}
                 ></video>
               )}
             </>
@@ -936,43 +1111,44 @@ function Prizes() {
           </h2>
         </div>
 
-        <div className="podium">
+        <motion.div 
+          className="podium"
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-50px' }}
+        >
           {/* 2do lugar */}
-          <div className="podium-step silver">
+          <motion.div className="podium-step silver" variants={staggerItemVariants}>
             <div className="podium-trophy">
               <Trophy color="currentColor" size={92} />
             </div>
             <div className="podium-amount"><span className="cur">$</span>600.000</div>
-            <div className="podium-cop">COP</div>
             <div className="podium-place">2do Lugar</div>
             <div className="podium-base" />
-          </div>
+          </motion.div>
 
           {/* 1er lugar */}
-          <div className="podium-step gold">
+          <motion.div className="podium-step gold" variants={staggerItemVariants}>
             <div className="podium-trophy">
               <div className="podium-crown"><Crown color="currentColor" /></div>
               <Trophy color="var(--accent)" size={110} />
             </div>
             <div className="podium-amount"><span className="cur">$</span>1.000.000</div>
-            <div className="podium-cop">COP</div>
             <div className="podium-place">1er Lugar</div>
             <div className="podium-base" />
-          </div>
+          </motion.div>
 
           {/* 3er lugar */}
-          <div className="podium-step bronze">
+          <motion.div className="podium-step bronze" variants={staggerItemVariants}>
             <div className="podium-trophy">
               <Trophy color="currentColor" size={92} />
             </div>
             <div className="podium-amount"><span className="cur">$</span>300.000</div>
-            <div className="podium-cop">COP</div>
             <div className="podium-place">3er Lugar</div>
             <div className="podium-base" />
-          </div>
-        </div>
-
-        <div className="podium-footer">Premios entregados en efectivo al finalizar la competencia.</div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
@@ -992,8 +1168,14 @@ function Register() {
           para la organización de la competencia, los brazaletes de identificación y los protocolos médicos.
         </p>
 
-        <div className="form-shell">
-          <aside className="form-side">
+        <motion.div 
+          className="form-shell"
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-50px' }}
+        >
+          <motion.aside className="form-side" variants={staggerItemVariants}>
             <div className="photo">
               <span className="photo-tag">★ Preventa</span>
               <img src={IMG.formSide} alt="" loading="lazy" />
@@ -1023,10 +1205,12 @@ function Register() {
               </div>
               {/* Nota de pago removida para acortar la tarjeta en mobile */}
             </div>
-          </aside>
+          </motion.aside>
 
-          <RegistrationForm />
-        </div>
+          <motion.div variants={staggerItemVariants} style={{ width: '100%' }}>
+            <RegistrationForm />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
@@ -1050,22 +1234,28 @@ function Contact() {
           </p>
         </div>
 
-        <div className="contact-grid">
-          <a href="https://instagram.com/guerrerosgymcucuta" target="_blank" rel="noreferrer" className="contact-card">
+        <motion.div 
+          className="contact-grid"
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-50px' }}
+        >
+          <motion.a href="https://instagram.com/guerrerosgymcucuta" target="_blank" rel="noreferrer" className="contact-card" variants={staggerItemVariants}>
             <div className="ic-wrap"><Icon.Instagram /></div>
             <div className="k">Instagram</div>
             <div className="v">@guerrerosgymcucuta</div>
             <div className="d">Resultados en vivo, próximos eventos y contenido del gimnasio.</div>
             <Icon.Arrow className="arrow" style={{ width: 22, height: 22 }} />
-          </a>
-          <a href="https://wa.me/573222177207" target="_blank" rel="noreferrer" className="contact-card">
+          </motion.a>
+          <motion.a href="https://wa.me/573222177207" target="_blank" rel="noreferrer" className="contact-card" variants={staggerItemVariants}>
             <div className="ic-wrap"><Icon.Whatsapp /></div>
             <div className="k">WhatsApp</div>
             <div className="v">322 217 7207</div>
             <div className="d">Coordinamos pagos en preventa y resolvemos dudas de inmediato.</div>
             <Icon.Arrow className="arrow" style={{ width: 22, height: 22 }} />
-          </a>
-        </div>
+          </motion.a>
+        </motion.div>
 
         <footer className="ep-footer">
         <div>© 2026 Guerreros Gym · Cucuta</div>
@@ -1085,11 +1275,12 @@ export default function EventPage() {
     <div className="ep-root">
       <Nav />
       <Hero />
-      <Prizes />
-      <Format />
-      <VideoSection />
-      <Register />
-      <Contact />
+      <ScrollReveal><Countdown /></ScrollReveal>
+      <ScrollReveal><Prizes /></ScrollReveal>
+      <ScrollReveal><Format /></ScrollReveal>
+      <ScrollReveal><VideoSection /></ScrollReveal>
+      <ScrollReveal><Register /></ScrollReveal>
+      <ScrollReveal><Contact /></ScrollReveal>
     </div>
   );
 }

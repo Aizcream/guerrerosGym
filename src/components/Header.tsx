@@ -7,7 +7,6 @@ export default function Header() {
     { label: 'NOSOTROS', href: '#nosotros' },
     { label: 'PROGRAMAS', href: '#programas' },
     { label: 'PLANES', href: '#planes' },
-    { label: 'SUPLEMENTOS', href: '#suplementos' },
     { label: 'TESTIMONIOS', href: '#testimonials' },
     { label: 'CONTACTO', href: '#contacto' },
     { label: 'RETO 2026 🏆', href: '/reto', highlight: true },
@@ -35,7 +34,7 @@ export default function Header() {
         </ul>
       </nav>
 
-      <button className="cta-button" onClick={() => window.location.href = '/reto'}>ÚNETE AL RETO</button>
+      <button className="cta-button" onClick={() => window.location.href = '#contacto'}>CONTACTO</button>
     </header>
   );
 }

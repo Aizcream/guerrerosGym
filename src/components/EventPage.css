@@ -770,14 +770,18 @@
 }
 
 .ep-root .video-frame {
-  margin-top: 64px;
+  margin-top: 48px;
   position: relative;
-  aspect-ratio: 16/9;
+  aspect-ratio: 9/16; /* vertical aspect ratio to match the 9:16 video */
+  max-width: 420px; /* limits width on desktop so it doesn't get excessively tall */
+  margin-left: auto;
+  margin-right: auto;
   border-radius: var(--r);
   overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--line-2);
   cursor: pointer;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .ep-root .video-iframe,
@@ -790,6 +794,7 @@
   border: none;
   z-index: 5;
   background: #000;
+  object-fit: cover;
 }
 
 .ep-root .video-frame::after {
@@ -961,7 +966,7 @@
   font-size: 0.7em;
   color: var(--ink-dim);
   margin-right: 4px;
-  vertical-align: top;
+  vertical-align: baseline;
 }
 
 .ep-root .podium-cop {
@@ -1043,12 +1048,75 @@
 
 @media (max-width: 800px) {
   .ep-root .podium {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: 1fr 1.05fr 1fr; /* keep horizontal step layout */
+    gap: 8px; /* small gaps to fit on mobile screens */
+    align-items: end;
+    margin-top: 36px;
+  }
+
+  /* Scale down trophies for mobile horizontal layout */
+  .ep-root .podium-trophy svg {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .ep-root .podium-step.gold .podium-trophy svg {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  /* Scale down the gold crown */
+  .ep-root .podium-crown {
+    margin-bottom: 2px;
+  }
+  
+  .ep-root .podium-crown svg {
+    width: 16px !important;
+    height: 11px !important;
+  }
+
+  /* Scale down text elements */
+  .ep-root .podium-amount {
+    font-size: 18px !important;
+    margin-top: 6px;
+  }
+
+  .ep-root .podium-step.gold .podium-amount {
+    font-size: 22px !important;
+  }
+
+  .ep-root .podium-amount .cur {
+    font-size: 0.6em;
+  }
+
+  .ep-root .podium-cop {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  .ep-root .podium-place {
+    font-size: 10px !important;
+    letter-spacing: 0.02em;
+    margin-top: 4px;
+    white-space: nowrap;
+  }
+
+  /* Base box heights scaled down for mobile horizontal layout */
+  .ep-root .podium-step.gold .podium-base {
+    height: 90px !important;
+  }
+
+  .ep-root .podium-step.silver .podium-base {
+    height: 65px !important;
+  }
+
+  .ep-root .podium-step.bronze .podium-base {
+    height: 45px !important;
   }
 
   .ep-root .podium-base {
-    height: 80px !important;
+    margin-top: 12px;
   }
 }
 
@@ -1256,6 +1324,8 @@
 .ep-root .field input,
 .ep-root .field select,
 .ep-root .field textarea {
+  width: 100%;
+  max-width: 100%;
   background: var(--bg);
   border: 1.5px solid var(--line);
   border-radius: var(--r-sm);
@@ -1784,6 +1854,17 @@
   margin-right: auto;
 }
 
+.ep-root .captain-badge {
+  font-size: 13px;
+  background: rgba(8, 59, 247, 0.12);
+  color: var(--warm);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
 /* ============================================================
    RESPONSIVE MOBILE ADJUSTMENTS
    ============================================================ */
@@ -1832,12 +1913,14 @@
     line-height: 1.5;
   }
 
-  /* Force Hero section to stack vertically with Photo below text */
+  /* Force Hero section to occupy dynamic screen viewport (svh/dvh) above Chrome bar */
   .ep-root .hero {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    min-height: calc(100svh - 60px); /* fits perfectly inside Chrome's small viewport (expanded UI bar) */
+    min-height: calc(100dvh - 60px); /* adjusts dynamically to dynamic heights */
     height: auto;
-    min-height: auto;
     background: var(--bg);
     padding: 0;
   }
@@ -1911,6 +1994,24 @@
     justify-content: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
+  }
+
+  /* Reduce section margins on mobile to avoid excessive empty space */
+  .ep-root section,
+  .ep-root .register,
+  .ep-root .prizes,
+  .ep-root .contact {
+    padding: 32px 20px !important;
+  }
+
+  /* Prevent R2 or Form container bleeding outside screen boundaries on some devices */
+  .ep-root .form-shell,
+  .ep-root .form-side,
+  .ep-root .form-main,
+  .ep-root .team-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }
 
@@ -2019,4 +2120,78 @@
     white-space: normal; /* allow wrapping inside the value to fit beautifully */
     line-height: 1.1;
   }
+
+  /* Reduce padding and scale down Resumen de pago on small mobile screens */
+  .ep-root .form-side .body {
+    padding: 20px 16px !important;
+  }
+
+  .ep-root .price-total .lab {
+    font-size: 18px !important;
+  }
+
+  .ep-root .price-total .val {
+    font-size: 28px !important;
+  }
+
+  /* Refine accordion cards (.team-card) on mobile to fit inside viewport and look premium */
+  .ep-root .team-header {
+    padding: 14px 16px !important;
+    gap: 10px !important;
+  }
+
+  .ep-root .team-header .num {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 16px !important;
+  }
+
+  .ep-root .team-header .title .t {
+    font-size: 18px !important;
+  }
+
+  .ep-root .captain-badge {
+    font-size: 10px !important;
+    padding: 1px 4px !important;
+  }
+
+  .ep-root .team-header .status {
+    font-size: 13px !important;
+  }
+
+  .ep-root .team-body-pad {
+    padding: 4px 16px 20px !important;
+  }
 }
+
+/* Sizing and positioning for desktop/mobile countdown views */
+.ep-root .hero-countdown-desktop {
+  display: none;
+}
+
+.ep-root .hero-countdown-mobile {
+  display: block;
+}
+
+@media (min-width: 1001px) {
+  .ep-root .hero-countdown-desktop {
+    display: block;
+    position: relative;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .ep-root .hero-countdown-mobile {
+    display: none;
+  }
+
+  .ep-root .hero {
+    min-height: 840px !important;
+  }
+
+  .ep-root .hero-wrap {
+    padding-bottom: 48px !important;
+  }
+}
+
+
