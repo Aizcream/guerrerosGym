@@ -131,7 +131,7 @@ function useCountdown(target: Date) {
 ============================================================ */
 export const VIDEO_CONFIG = {
   type: 'local' as 'youtube' | 'local',
-  src: '/MovimientosReto.mp4',
+  src: 'https://assets.guerrerosgym.com/MovimientosReto.mp4',
 };
 
 /* ============================================================
