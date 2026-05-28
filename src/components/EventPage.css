@@ -320,7 +320,7 @@
 
 .ep-root .hero h1.display {
   font-size: clamp(56px, 8.5vw, 140px);
-  line-height: 0.86;
+  line-height: 0.96;
   margin-bottom: 24px;
   text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   font-weight: 400;
@@ -343,7 +343,7 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  font-size: 0.62em;
+  font-size: 1em;
 }
 
 .ep-root .hero h1 .line.gym .gym-text {
@@ -778,6 +778,18 @@
   background: var(--bg-card);
   border: 1px solid var(--line-2);
   cursor: pointer;
+}
+
+.ep-root .video-iframe,
+.ep-root .video-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  z-index: 5;
+  background: #000;
 }
 
 .ep-root .video-frame::after {
@@ -1770,4 +1782,241 @@
 .ep-root #evento .section-lead {
   margin-left: auto;
   margin-right: auto;
+}
+
+/* ============================================================
+   RESPONSIVE MOBILE ADJUSTMENTS
+   ============================================================ */
+
+@media (max-width: 1000px) {
+  /* Center align Hero section text elements */
+  .ep-root .hero-left {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ep-root .hero h1.display {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.02; /* slightly more separation for mobile display lines */
+  }
+  
+  .ep-root .hero h1 .line.gym {
+    justify-content: center;
+  }
+
+  .ep-root .hero h1 .line.small {
+    margin-top: 6px; /* add elegant spacing above the subtext */
+  }
+
+  .ep-root .hero-meta {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ep-root .hero-tagline {
+    text-align: center;
+  }
+
+  .ep-root .hero-sub {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 14px; /* decreased description font-size on mobile */
+    line-height: 1.5;
+  }
+
+  /* Force Hero section to stack vertically with Photo below text */
+  .ep-root .hero {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: auto;
+    background: var(--bg);
+    padding: 0;
+  }
+
+  .ep-root .hero-wrap {
+    order: 1;
+    width: 100%;
+    padding: 36px 20px 24px;
+    display: block;
+    position: relative;
+    z-index: 2;
+    flex: none;
+  }
+
+  .ep-root .hero-photo {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.4; /* wide format showing faces and the 3 people */
+    order: 2;
+    background: var(--bg);
+    right: auto;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    overflow: hidden;
+    opacity: 1 !important; /* fuerza opacidad total para que brille y no se vea opaca */
+  }
+
+  .ep-root .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 25%; /* perfectly adjusted so faces are fully visible */
+    filter: contrast(1.1) brightness(0.85) !important; /* tal cual como en desktop */
+    mix-blend-mode: screen !important; /* tal cual como en desktop */
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  /* Pequeño degradado desde arriba hacia abajo para fundir la imagen con el fondo */
+  .ep-root .hero-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      var(--bg) 0%,
+      transparent 20%,
+      transparent 80%,
+      var(--bg) 100%
+    ) !important;
+    mix-blend-mode: normal !important; /* fuerza mezcla normal para evitar el efecto opaco o grisáceo */
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .ep-root .countdown {
+    order: 3;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    padding: 16px 0;
+  }
+
+  /* Center align all section titles, subtitles, and lead texts on mobile */
+  .ep-root section .section-title,
+  .ep-root section .section-eyebrow,
+  .ep-root section .section-lead {
+    text-align: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Reduce header height and prevent wrapping of Inscribir button */
+  .ep-root .nav-inner {
+    padding: 10px 12px;
+  }
+
+  .ep-root .nav-logo {
+    gap: 8px;
+  }
+
+  .ep-root .nav-logo img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ep-root .nav-logo .b1 {
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+
+  .ep-root .nav-logo .b2 {
+    font-size: 9px;
+    margin-top: 1px;
+  }
+
+  .ep-root .nav-cta {
+    padding: 8px 12px;
+    font-size: 12px;
+    white-space: nowrap; /* prevents two lines vertical expand */
+    gap: 4px;
+    font-weight: 700;
+  }
+
+  .ep-root .nav-cta svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* Force Hero buttons to sit in a single row side-by-side */
+  .ep-root .hero-ctas {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .ep-root .hero-ctas .btn-primary,
+  .ep-root .hero-ctas .btn-ghost {
+    flex: 1;
+    font-size: 12px;
+    padding: 12px 6px;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap; /* keep text on one single line */
+  }
+
+  .ep-root .hero-ctas .btn-primary svg,
+  .ep-root .hero-ctas .btn-ghost svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  /* Shrink and align Hero Pills into a single row on mobile */
+  .ep-root .hero-pills {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 6px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .ep-root .hero-pill {
+    flex: 1;
+    padding: 8px 6px;
+    gap: 6px;
+    border-radius: 8px;
+    min-width: 0; /* allows columns to shrink as needed */
+  }
+
+  .ep-root .hero-pill .ic {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  .ep-root .hero-pill .ic svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .ep-root .hero-pill .k {
+    font-size: 8px;
+    letter-spacing: 0.05em;
+    margin-bottom: 0px;
+  }
+
+  .ep-root .hero-pill .v {
+    font-size: 10px;
+    letter-spacing: 0.01em;
+    white-space: normal; /* allow wrapping inside the value to fit beautifully */
+    line-height: 1.1;
+  }
 }

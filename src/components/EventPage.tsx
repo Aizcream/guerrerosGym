@@ -117,6 +117,24 @@ function useCountdown(target: Date) {
 }
 
 /* ============================================================
+   CONFIGURACIÓN DEL VIDEO (Buenas Prácticas de Rendimiento)
+   ============================================================
+   Para evitar problemas de rendimiento con un video pesado (ej. 180MB):
+   1. RECOMENDADO: Sube el video a YouTube (unlisted o público).
+      Configura 'type: "youtube"' y coloca el ID del video en 'src'.
+   2. ALTERNATIVA LOCAL: Comprime el video a ~15-20MB (ej. con Handbrake o FFmpeg)
+      y guárdalo en 'public/videos/reto-movimientos.mp4'.
+      Configura 'type: "local"' y coloca la ruta '/videos/reto-movimientos.mp4' en 'src'.
+   
+   Al hacer clic en reproducir, el video se cargará de forma diferida (lazy loading),
+   consumiendo 0 bytes de ancho de banda en la carga inicial de la página.
+============================================================ */
+export const VIDEO_CONFIG = {
+  type: 'local' as 'youtube' | 'local',
+  src: '/MovimientosReto.mp4',
+};
+
+/* ============================================================
    IMAGES
    Hero + format cards → Unsplash (original Claude Design URLs)
    Form side + video   → uploaded local files
@@ -685,7 +703,7 @@ function Nav() {
         <a href="#top" className="nav-logo">
           <img src={IMG.logo} alt="Guerreros Gym" />
           <div>
-            <div className="b1">Guerreros Challenger</div>
+            <div className="b1">Guerreros Challenge</div>
             <div className="b2">Edición Diamantes · 25 y 26 de Junio</div>
           </div>
         </a>
@@ -746,11 +764,11 @@ function Hero() {
             <span>25 + 26 Junio · Cucuta</span>
           </div>
           <h1 className="display">
-            <span className="line small">Edición Diamantes</span>
             <span className="line accent">Guerreros</span>
             <span className="line gym">
-              <span className="gym-text">Challenger</span>
+              <span className="gym-text">Challenge</span>
             </span>
+            <span className="line small">Edición Diamantes</span>
           </h1>
           <p className="hero-tagline">
             Fuerza<span className="sep">.</span> Equipo<span className="sep">.</span> Disciplina<span className="sep">.</span> Gloria.
@@ -826,6 +844,8 @@ function Format() {
    ============================================================ */
 function VideoSection() {
   const [playing, setPlaying] = useState(false);
+  const hasVideo = VIDEO_CONFIG.src !== '';
+
   return (
     <section className="video-section" id="video">
       <div className="wrap">
@@ -837,15 +857,65 @@ function VideoSection() {
           Movimientos y estándares de la competencia explicados por el staff de Guerreros Gym.
           Estúdialos, practícalos y llega listo a romper marca.
         </p>
-        <div className="video-frame" onClick={() => setPlaying(true)}>
-          <img src={IMG.video} alt="Video de los ejercicios" className="video-poster" />
-          <div className="video-inner">
-            <div className="play-big">
-              <Icon.Play />
-            </div>
-            <div className="video-title">{playing ? 'Cargando…' : 'Reproducir video'}</div>
-            <div className="video-sub">// Próximamente — video de los ejercicios oficiales</div>
-          </div>
+        <div 
+          className="video-frame" 
+          onClick={() => { 
+            if (hasVideo) {
+              setPlaying(true); 
+            } else {
+              alert('Por favor, configura la constante VIDEO_CONFIG al inicio del archivo "src/components/EventPage.tsx" con tu ID de YouTube o ruta de video local comprimido.');
+            }
+          }}
+          style={{ cursor: hasVideo ? 'pointer' : 'default' }}
+        >
+          {!playing ? (
+            <>
+              <img src={IMG.video} alt="Video de los ejercicios" className="video-poster" />
+              <div className="video-inner">
+                <div className="play-big">
+                  <Icon.Play />
+                </div>
+                <div className="video-title">Reproducir video</div>
+                <div className="video-sub">
+                  {hasVideo ? 'Toca para ver los estándares oficiales' : 'Próximamente — video de los ejercicios oficiales'}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {VIDEO_CONFIG.type === 'youtube' ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${VIDEO_CONFIG.src}?autoplay=1&rel=0`}
+                  title="Ejercicios oficiales Guerreros Challenge"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="video-iframe"
+                ></iframe>
+              ) : (
+                <video
+                  ref={(el) => {
+                    if (el) {
+                      el.play().catch(() => {});
+                      if (el.requestFullscreen) {
+                        el.requestFullscreen().catch(() => {});
+                      } else if ((el as any).webkitRequestFullscreen) {
+                        (el as any).webkitRequestFullscreen();
+                      } else if ((el as any).msRequestFullscreen) {
+                        (el as any).msRequestFullscreen();
+                      }
+                    }
+                  }}
+                  src={VIDEO_CONFIG.src}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="video-player"
+                  style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10, background: '#000', objectFit: 'contain' }}
+                ></video>
+              )}
+            </>
+          )}
         </div>
       </div>
     </section>
@@ -951,11 +1021,7 @@ function Register() {
                 </div>
                 <div className="val">$120.000<small>Preventa</small></div>
               </div>
-              <p className="note">
-                El pago se coordina por WhatsApp tras enviar el formulario. Cupos limitados —
-                la preventa cierra al completar los equipos. No reembolsable; transferible
-                hasta 7 días antes del evento.
-              </p>
+              {/* Nota de pago removida para acortar la tarjeta en mobile */}
             </div>
           </aside>
 
@@ -1002,10 +1068,10 @@ function Contact() {
         </div>
 
         <footer className="ep-footer">
-          <div>© 2026 Guerreros Gym · Cucuta</div>
-          <div>Entrenamiento Funcional · Colombia</div>
-          <div>Guerreros Challenger Edición Diamantes 2026</div>
-        </footer>
+        <div>© 2026 Guerreros Gym · Cucuta</div>
+        <div>Entrenamiento Funcional · Colombia</div>
+        <div>Guerreros Challenge Edición Diamantes 2026</div>
+      </footer>
       </div>
     </section>
   );
