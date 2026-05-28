@@ -1151,8 +1151,6 @@
 }
 
 .ep-root .form-side {
-  position: sticky;
-  top: 100px;
   background: var(--bg-card);
   border: 1px solid var(--line);
   border-radius: var(--r);
@@ -1239,6 +1237,21 @@
 .ep-root .price-row span:last-child {
   color: var(--ink);
   font-family: "JetBrains Mono", monospace;
+}
+
+.ep-root .price-row.price-tier {
+  padding: 10px 0;
+  font-size: 14px;
+  opacity: 0.55;
+}
+
+.ep-root .price-row.price-tier.active-tier {
+  opacity: 1;
+  color: var(--ink);
+}
+
+.ep-root .price-block .price-tier + .price-tier {
+  border-top: 1px solid var(--line);
 }
 
 .ep-root .price-total {

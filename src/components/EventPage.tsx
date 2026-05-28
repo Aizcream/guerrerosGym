@@ -1168,49 +1168,46 @@ function Register() {
           para la organización de la competencia, los brazaletes de identificación y los protocolos médicos.
         </p>
 
-        <motion.div 
-          className="form-shell"
-          variants={staggerContainerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-50px' }}
-        >
-          <motion.aside className="form-side" variants={staggerItemVariants}>
+        <div className="form-shell">
+          <aside className="form-side">
             <div className="photo">
-              <span className="photo-tag">★ Preventa</span>
+              <span className="photo-tag">★ Preventa activa</span>
               <img src={IMG.formSide} alt="" loading="lazy" />
               <div className="photo-title">Asegura tu cupo<br />antes que se acabe</div>
             </div>
             <div className="body">
-              <h3>Resumen de pago</h3>
+              <h3>Precios por equipo</h3>
               <div className="price-block">
-                <div className="price-row">
-                  <span>Precio regular</span>
-                  <span style={{ textDecoration: 'line-through', opacity: 0.45 }}>$150.000</span>
-                </div>
-                <div className="price-row" style={{ color: 'var(--accent)' }}>
+                <div className="price-row price-tier active-tier">
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ background: 'var(--accent)', color: 'var(--accent-ink)', fontSize: 10, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '3px 7px', borderRadius: 4, fontFamily: 'JetBrains Mono, monospace' }}>OFERTA</span>
-                    Preventa activa
+                    <span style={{ background: 'var(--accent)', color: 'var(--accent-ink)', fontSize: 9, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '2px 6px', borderRadius: 4, fontFamily: 'JetBrains Mono, monospace' }}>ACTIVO</span>
+                    Preventa · hasta 6 jun
                   </span>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>−$30.000</span>
+                  <span style={{ color: 'var(--accent)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>$120.000</span>
+                </div>
+                <div className="price-row price-tier">
+                  <span>Hasta el 16 de junio</span>
+                  <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>$150.000</span>
+                </div>
+                <div className="price-row price-tier">
+                  <span>Hasta el día del evento</span>
+                  <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>$200.000</span>
                 </div>
               </div>
               <div className="price-total">
                 <div>
-                  <div className="lab">Total equipo</div>
-                  <div style={{ fontSize: 14, color: 'var(--ink-muted)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '.12em', textTransform: 'uppercase', marginTop: 4 }}>3 personas · COP</div>
+                  <div className="lab">Precio actual</div>
+                  <div style={{ fontSize: 13, color: 'var(--ink-muted)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '.10em', textTransform: 'uppercase', marginTop: 4 }}>3 personas · COP</div>
                 </div>
-                <div className="val">$120.000<small>Preventa</small></div>
+                <div className="val">$120.000<small>Hasta 6 jun</small></div>
               </div>
-              {/* Nota de pago removida para acortar la tarjeta en mobile */}
             </div>
-          </motion.aside>
+          </aside>
 
-          <motion.div variants={staggerItemVariants} style={{ width: '100%' }}>
+          <div style={{ width: '100%' }}>
             <RegistrationForm />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -1241,10 +1238,10 @@ function Contact() {
           whileInView="show"
           viewport={{ once: true, margin: '-50px' }}
         >
-          <motion.a href="https://instagram.com/guerrerosgymcucuta" target="_blank" rel="noreferrer" className="contact-card" variants={staggerItemVariants}>
+          <motion.a href="https://www.instagram.com/guerreroschallenge/" target="_blank" rel="noreferrer" className="contact-card" variants={staggerItemVariants}>
             <div className="ic-wrap"><Icon.Instagram /></div>
             <div className="k">Instagram</div>
-            <div className="v">@guerrerosgymcucuta</div>
+            <div className="v">@guerreroschallenge</div>
             <div className="d">Resultados en vivo, próximos eventos y contenido del gimnasio.</div>
             <Icon.Arrow className="arrow" style={{ width: 22, height: 22 }} />
           </motion.a>
