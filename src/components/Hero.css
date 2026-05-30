@@ -154,31 +154,30 @@
 
 .hero-image-placeholder {
   position: absolute;
-  bottom: -48px; /* Punto medio óptimo: lo mantiene más alto que el original (-60px) pero sin chocar con el header */
-  right: -2%; /* Alineación perfecta para dejar los textos de la izquierda completamente libres */
-  width: 148%; /* Reducido de 160% a 148%: más imponente que el original (140%) pero sin saturar el espacio */
+  bottom: -60px;
+  right: 15%; /* Alineado hacia la derecha */
+  width: 140%; /* Suficientemente grande para llenar el lado derecho */
   display: flex;
   justify-content: center;
   align-items: flex-end;
   pointer-events: none;
   z-index: 0;
-  transition: all 0.3s ease;
 }
 
 .hero-image {
-  max-height: 110vh; /* Permitimos mayor altura en pantallas altas */
+  max-height: 100vh;
   width: 100%;
   object-fit: cover;
   mix-blend-mode: lighten;
   mask-image:
-    linear-gradient(to top, transparent 2%, black 15%),
-    radial-gradient(circle at 50% 45%, black 50%, transparent 80%);
+    linear-gradient(to top, transparent 2%, black 20%),
+    radial-gradient(circle at center, black 40%, transparent 70%);
   -webkit-mask-image:
-    linear-gradient(to top, transparent 2%, black 15%),
-    radial-gradient(circle at 50% 45%, black 50%, transparent 80%);
+    linear-gradient(to top, transparent 2%, black 20%),
+    radial-gradient(circle at center, black 40%, transparent 70%);
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
-  opacity: 0.95; /* Mayor opacidad para que resalte más en el fondo */
+  opacity: 0.9;
 }
 
 .features-card {
@@ -266,30 +265,6 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1366px) {
-  .hero-title {
-    font-size: 3.8rem; /* Reducimos ligeramente el tamaño del título en laptops comunes para evitar superposición */
-  }
-
-  .hero-image-placeholder {
-    width: 140%; /* Hacemos el atleta un poco más compacto en pantallas medianas */
-    right: -4%; /* Lo mantenemos a una distancia prudente */
-    bottom: -50px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .hero-title {
-    font-size: 3.4rem; /* Adaptamos el título para pantallas más estrechas */
-  }
-
-  .hero-image-placeholder {
-    width: 135%; /* Ajustamos proporcionalmente el atleta */
-    right: -5%;
-    bottom: -50px;
-  }
-}
-
 @media (max-width: 1024px) {
   .hero-section {
     padding: 0 2rem;
@@ -324,12 +299,12 @@
   .hero-image-placeholder {
     right: 50%;
     transform: translateX(50%);
-    width: 115%; /* En tablet el atleta se ve un poco más grande y protagónico, recortado con degradado */
-    bottom: -20px;
+    width: 100%;
+    bottom: 0;
   }
 
   .features-card {
-    display: none; /* Ocultamos la tarjeta en tablet/móvil para enfocar en el atleta */
+    display: none; /* Ocultamos la tarjeta en mÃ³vil para enfocar en el atleta */
   }
 }
 
@@ -339,8 +314,8 @@
   }
 
   .hero-title {
-    font-size: 2.8rem; /* Tamaño de fuente ideal en móviles */
-    white-space: normal; /* Permitimos wrap en móvil */
+    font-size: 3rem;
+    white-space: normal; /* Permitimos wrap en mÃ³vil */
   }
 
   .hero-buttons {
@@ -357,18 +332,6 @@
 
   .hero-bottom-bar {
     gap: 1rem;
-    justify-content: center; /* Centrado en móviles para mejorar la simetría */
-  }
-
-  .hero-right-side {
-    min-height: 350px; /* Altura optimizada para móviles */
-  }
-
-  .hero-image-placeholder {
-    right: 50%;
-    transform: translateX(50%);
-    width: 130%; /* En móviles se ve imponente, expandiéndose un poco a los lados con degradado suave */
-    bottom: -15px;
+    justify-content: flex-start;
   }
 }
-
