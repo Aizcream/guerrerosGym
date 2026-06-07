@@ -626,6 +626,7 @@ function PendingPayment({
 
 function RegistrationForm() {
   const [teamName, setTeamName] = useState('');
+  const [categoria, setCategoria] = useState<'Principiante' | 'Avanzado' | ''>('');
   const [members, setMembers] = useState<MemberData[]>([emptyMember(), emptyMember(), emptyMember()]);
   const [openIdx, setOpenIdx] = useState<number>(0);
   const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -657,7 +658,8 @@ function RegistrationForm() {
   const genders = members.map(m => m.genero).filter(Boolean);
   const genderOK = genders.includes('M') && genders.includes('F');
   const teamNameError = submitAttempted && !teamName.trim();
-  const allOK = teamName.trim() && memberComplete.every(Boolean) && genderOK;
+  const categoriaError = submitAttempted && !categoria;
+  const allOK = teamName.trim() && categoria && memberComplete.every(Boolean) && genderOK;
 
   // ── Submit → POST → guardar en LS → redirect ──────────────
   const handleSubmit = async (e: React.FormEvent) => {
@@ -673,7 +675,7 @@ function RegistrationForm() {
 
     setApiLoading(true);
     try {
-      const payload = buildPayload(teamName, members);
+    const payload = buildPayload(teamName, members, categoria as 'Principiante' | 'Avanzado');
       const result = await postInscripcion(payload);
       // Guardar ANTES de redirigir para poder recuperar si el pago falla
       guardarInscripcion(result, teamName);
@@ -743,6 +745,48 @@ function RegistrationForm() {
                   style={{ fontFamily: 'Anton, sans-serif', fontSize: 28, letterSpacing: '0.04em' }}
                 />
               </Field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Categoría del equipo */}
+      <div className="team-card open" style={{ borderColor: categoria ? 'var(--accent)' : (categoriaError ? 'rgba(229,53,53,0.5)' : 'var(--line-2)') }}>
+        <div className="team-header" style={{ cursor: 'default' }}>
+          <div className="num" style={{
+            borderColor: categoria ? 'var(--accent)' : (categoriaError ? '#e03535' : 'var(--accent)'),
+            color: categoria ? 'var(--accent)' : (categoriaError ? '#e03535' : 'var(--accent)'),
+          }}>⚡</div>
+          <div className="title">
+            <div className="t">Categoría de competencia</div>
+            <div className="s">Selecciona el nivel en que participará tu equipo</div>
+          </div>
+          {categoria && (
+            <div className="status">
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <Icon.Check style={{ width: 14, height: 14 }} /> Ok
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="team-body" style={{ gridTemplateRows: '1fr' }}>
+          <div className="team-body-inner">
+            <div className="team-body-pad">
+              <div className="field">
+                <div className="chip-row" style={{ paddingTop: 4, gap: 14 }}>
+                  {(['Principiante', 'Avanzado'] as const).map((cat) => (
+                    <button
+                      type="button"
+                      key={cat}
+                      className={'chip chip-categoria' + (categoria === cat ? ' on' : '')}
+                      onClick={() => setCategoria(cat)}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+                {categoriaError && <span className="err">Selecciona una categoría</span>}
+              </div>
             </div>
           </div>
         </div>

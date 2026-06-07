@@ -1,0 +1,26 @@
+---
+import './CtaSection.css';
+import { Image } from 'astro:assets';
+import logoImg from '../assets/images/guerreros-logo.jpeg';
+---
+
+<section class="cta-final-section">
+  <div class="cta-final-container">
+    
+    <div class="cta-logo">
+      <Image src={logoImg} alt="Guerreros Gym" class="cta-img" />
+    </div>
+    
+    <div class="cta-text">
+      <h2 class="cta-title">¿LISTO PARA TRANSFORMAR<br />TU VIDA?</h2>
+      <p class="cta-desc">Únete a Guerreros Gym y comienza tu mejor versión hoy.</p>
+    </div>
+    
+    <div class="cta-action">
+      <a href="#contacto" class="btn-cta-final">
+        RESERVA TU PRIMERA CLASE &rarr;
+      </a>
+    </div>
+
+  </div>
+</section>

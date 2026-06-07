@@ -140,7 +140,7 @@ export default function Programs() {
                 <div className="program-card-slide" key={`${prog.id}-${i}`}>
                   <div className="program-card">
                     <div className="card-image-wrapper">
-                      <img src={prog.image} alt={prog.title} className="card-image" />
+                      <img src={prog.image} alt={prog.title} className="card-image" loading="lazy" decoding="async" />
                     </div>
                     <div className="card-content">
                       <h3 className="card-title">{prog.title}</h3>

@@ -1,0 +1,68 @@
+---
+import './Testimonials.css';
+import { Image } from 'astro:assets';
+import avatarCarlos from '../assets/images/avatar_carlos.png';
+import avatarMaria from '../assets/images/avatar_maria.png';
+import avatarJuan from '../assets/images/avatar_juan.png';
+
+const testimonials = [
+  {
+    id: 1,
+    image: avatarCarlos,
+    quote: '"Llegué sin condición y hoy me siento más fuerte que nunca. Guerreros Gym cambió mi vida."',
+    name: 'Carlos M.',
+    tag: '-15KG EN 4 MESES'
+  },
+  {
+    id: 2,
+    image: avatarMaria,
+    quote: '"La comunidad, los entrenadores y la metodología son lo que me mantienen motivada cada día."',
+    name: 'María G.',
+    tag: 'HYROX ATHLETE'
+  },
+  {
+    id: 3,
+    image: avatarJuan,
+    quote: '"Entrenar aquí es diferente, no es solo físico, es mental. Te vuelves parte de algo más grande."',
+    name: 'Juan P.',
+    tag: '3 AÑOS EN GUERREROS'
+  }
+];
+---
+
+<section class="testimonials-section">
+  <div class="testimonials-container">
+    
+    <div class="testimonials-header">
+      <div class="testimonials-tag">
+        <span class="hero-tag-dot"></span>
+        TESTIMONIOS
+      </div>
+      <h2 class="testimonials-title">
+        HISTORIAS DE<br />TRANSFORMACIÓN
+      </h2>
+    </div>
+
+    <div class="testimonials-cards-wrapper">
+      <div class="testimonials-cards">
+        {testimonials.map((test) => (
+          <div class="testimonial-card" key={test.id}>
+            <div class="test-top">
+              <Image src={test.image} alt={test.name} class="test-avatar" />
+              <p class="test-quote">{test.quote}</p>
+            </div>
+            <div class="test-bottom">
+              <h4 class="test-name">{test.name}</h4>
+              <span class="test-label">{test.tag}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="test-controls">
+        <button class="test-arrow">&lt;</button>
+        <button class="test-arrow">&gt;</button>
+      </div>
+    </div>
+
+  </div>
+</section>

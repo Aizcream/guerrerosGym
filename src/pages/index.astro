@@ -1,22 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header';
-import Hero from '../components/Hero';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
 import Programs from '../components/Programs';
-import WhyUs from '../components/WhyUs';
+import WhyUs from '../components/WhyUs.astro';
 import Planes from '../components/Planes';
-import Testimonials from '../components/Testimonials';
-import CtaSection from '../components/CtaSection';
+import Testimonials from '../components/Testimonials.astro';
+import CtaSection from '../components/CtaSection.astro';
 ---
 
 <Layout title="Guerreros Gym - Forja tu mejor versión">
-	<Header client:load />
+	<Header />
 	<main>
-		<Hero client:load />
-		<Programs client:load />
-		<WhyUs client:load />
+		<Hero />
+		<Programs client:visible />
+		<WhyUs />
 		<Planes client:load />
-		<Testimonials client:load />
-		<CtaSection client:load />
+		<Testimonials />
+		<CtaSection />
 	</main>
 </Layout>

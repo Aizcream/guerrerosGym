@@ -1,0 +1,39 @@
+---
+import './Header.css';
+import { Image } from 'astro:assets';
+import logoImg from '../assets/images/guerreros-logo.jpeg';
+
+const navItems = [
+  { label: 'INICIO', href: '/' },
+  { label: 'NOSOTROS', href: '#nosotros' },
+  { label: 'PROGRAMAS', href: '#programas' },
+  { label: 'PLANES', href: '#planes' },
+  { label: 'TESTIMONIOS', href: '#testimonials' },
+  { label: 'CONTACTO', href: '#contacto' },
+  { label: 'RETO 2026 🏆', href: '/reto', highlight: true },
+];
+---
+
+<header class="header-container">
+  <a class="logo-container" href="/">
+    <Image src={logoImg} alt="Guerreros Gym Logo" class="logo-img" />
+    <span class="logo-text">GUERREROS</span>
+  </a>
+
+  <nav>
+    <ul class="nav-links">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={`nav-link ${item.highlight ? 'nav-link-reto' : ''}`}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <a href="#contacto" class="cta-button">CONTACTO</a>
+</header>

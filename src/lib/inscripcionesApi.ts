@@ -46,6 +46,8 @@ export interface InscripcionPayload {
   email_contacto: string;
   /** Celular del primer atleta — se usa como contacto principal */
   telefono_contacto: string;
+  /** Categoría en la que compite el equipo: 'Principiante' | 'Avanzado' */
+  categoria: 'Principiante' | 'Avanzado';
   atletas: AtletaPayload[];
 }
 
@@ -178,12 +180,14 @@ export interface FormMember {
  */
 export function buildPayload(
   teamName: string,
-  members: FormMember[]
+  members: FormMember[],
+  categoria: 'Principiante' | 'Avanzado'
 ): InscripcionPayload {
   return {
     nombre_equipo: teamName,
     email_contacto: members[0].correo,
     telefono_contacto: members[0].celular,
+    categoria,
     atletas: members.map((m) => ({
       nombres_apellidos: m.nombres,
       cedula: m.cedula,

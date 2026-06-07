@@ -516,6 +516,17 @@
   }
 }
 
+/* Laptops: prevent countdown from overlapping hero pills on ~768–900px tall screens */
+@media (min-width: 1001px) and (max-width: 1440px) {
+  .ep-root .hero {
+    min-height: 800px;
+  }
+
+  .ep-root .hero-wrap {
+    padding-bottom: 64px;
+  }
+}
+
 /* ===== COUNTDOWN ===== */
 .ep-root .countdown {
   position: relative;
@@ -1535,6 +1546,39 @@
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-ink);
+}
+
+/* Categoria chips — larger, card-like for just 2 options */
+.ep-root .chip-categoria {
+  flex: 1;
+  min-width: 140px;
+  padding: 18px 24px;
+  border-radius: var(--r-sm);
+  font-size: 18px;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-width: 2px;
+  transition: all .2s;
+  justify-content: center;
+}
+
+.ep-root .chip-categoria:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+}
+
+.ep-root .chip-categoria.on {
+  background: color-mix(in srgb, var(--accent) 18%, var(--bg-3));
+  border-color: var(--accent);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--accent), 0 6px 24px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 /* Gender warning */
