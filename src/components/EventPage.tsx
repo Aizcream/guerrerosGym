@@ -1155,7 +1155,11 @@ function Prizes() {
           </h2>
         </div>
 
-        <motion.div 
+        {/* ── CATEGORÍA AVANZADO ── */}
+        <div className="prizes-category-label" style={{ marginTop: 48 }}>
+          <span className="prizes-cat-badge prizes-cat-avanzado">Categoría Avanzado</span>
+        </div>
+        <motion.div
           className="podium"
           variants={staggerContainerVariants}
           initial="hidden"
@@ -1189,6 +1193,52 @@ function Prizes() {
               <Trophy color="currentColor" size={92} />
             </div>
             <div className="podium-amount"><span className="cur">$</span>300.000</div>
+            <div className="podium-place">3er Lugar</div>
+            <div className="podium-base" />
+          </motion.div>
+        </motion.div>
+
+        {/* ── CATEGORÍA PRINCIPIANTE ── */}
+        <div className="prizes-category-label" style={{ marginTop: 64 }}>
+          <span className="prizes-cat-badge prizes-cat-principiante">Categoría Principiante</span>
+        </div>
+        <motion.div
+          className="podium"
+          variants={staggerContainerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: '-50px' }}
+        >
+          {/* 2do lugar */}
+          <motion.div className="podium-step silver" variants={staggerItemVariants}>
+            <div className="podium-trophy">
+              <Trophy color="currentColor" size={92} />
+            </div>
+            <div className="podium-amount"><span className="cur">$</span>200.000</div>
+            <div className="podium-sub">+ Suplementos</div>
+            <div className="podium-place">2do Lugar</div>
+            <div className="podium-base" />
+          </motion.div>
+
+          {/* 1er lugar */}
+          <motion.div className="podium-step gold" variants={staggerItemVariants}>
+            <div className="podium-trophy">
+              <div className="podium-crown"><Crown color="currentColor" /></div>
+              <Trophy color="var(--accent)" size={110} />
+            </div>
+            <div className="podium-amount"><span className="cur">$</span>300.000</div>
+            <div className="podium-sub">+ Suplementos</div>
+            <div className="podium-place">1er Lugar</div>
+            <div className="podium-base" />
+          </motion.div>
+
+          {/* 3er lugar */}
+          <motion.div className="podium-step bronze" variants={staggerItemVariants}>
+            <div className="podium-trophy">
+              <Trophy color="currentColor" size={92} />
+            </div>
+            <div className="podium-amount"><span className="cur">$</span>100.000</div>
+            <div className="podium-sub">+ Suplementos</div>
             <div className="podium-place">3er Lugar</div>
             <div className="podium-base" />
           </motion.div>

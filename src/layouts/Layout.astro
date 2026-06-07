@@ -17,6 +17,11 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<!-- Preconnect a Google Fonts para eliminar la latencia de DNS/TLS -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<!-- Slot para que las páginas inyecten sus propios links de fuentes -->
+		<slot name="head" />
 	</head>
 	<body>
 		<slot />

@@ -1,7 +1,6 @@
 /* ===== RETO GUERREROS GYM — CSS from Claude Design ===== */
 /* Scoped under .ep-root to avoid conflicts with main site  */
-
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+/* Fuentes: cargadas desde el <head> HTML en reto.astro    */
 
 .ep-root {
   --bg: #0a0a0a;
@@ -931,7 +930,7 @@
 }
 
 .ep-root .podium {
-  margin-top: 72px;
+  margin-top: 32px;
   position: relative;
   z-index: 1;
   display: grid;
@@ -1047,6 +1046,44 @@
 .ep-root .podium-step.bronze .podium-trophy svg {
   color: var(--warm);
   filter: drop-shadow(0 0 14px color-mix(in srgb, var(--warm) 30%, transparent));
+}
+
+/* Category labels between podiums */
+.ep-root .prizes-category-label {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.ep-root .prizes-cat-badge {
+  display: block;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.ep-root .prizes-cat-avanzado {
+  color: var(--ink);
+}
+
+.ep-root .prizes-cat-principiante {
+  color: var(--ink);
+}
+
+/* Supplementary prize text (+ Suplementos) */
+.ep-root .podium-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #10b981;
+  margin-top: 6px;
+  margin-bottom: 0;
 }
 
 .ep-root .podium-footer {

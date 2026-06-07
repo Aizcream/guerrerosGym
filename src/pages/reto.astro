@@ -4,6 +4,13 @@ import EventPage from '../components/EventPage';
 ---
 
 <Layout title="Guerreros Challenge Edición Diamantes - Competencia en Equipos de 3">
+  <!-- Carga las fuentes del reto desde el HTML, no desde el CSS de React -->
+  <!-- Esto elimina la cascada de red y evita el FOUT en mobile -->
+  <link
+    slot="head"
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+  />
   <main>
     <EventPage client:load />
   </main>
