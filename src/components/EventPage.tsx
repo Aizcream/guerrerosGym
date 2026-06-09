@@ -211,6 +211,58 @@ const staggerItemVariants = {
    ============================================================ */
 const EVENT_DATE = new Date('2026-06-25T08:00:00-05:00');
 
+/* ============================================================
+   PRECIOS Y TARIFAS DINÁMICAS
+   ============================================================ */
+export interface PriceTier {
+  id: string;
+  name: string;
+  price: number;
+  formattedPrice: string;
+  deadline: Date;
+  label: string;
+  detailLabel: string;
+}
+
+export const PRICE_TIERS: PriceTier[] = [
+  {
+    id: 'preventa',
+    name: 'Preventa',
+    price: 120000,
+    formattedPrice: '$120.000',
+    deadline: new Date('2026-06-07T00:00:00-05:00'), // Termina el 6 de junio a las 23:59:59 (zona horaria Colombia UTC-5)
+    label: 'Preventa · hasta 6 jun',
+    detailLabel: 'Hasta 6 jun',
+  },
+  {
+    id: 'regular1',
+    name: 'Hasta el 16 de junio',
+    price: 150000,
+    formattedPrice: '$150.000',
+    deadline: new Date('2026-06-17T00:00:00-05:00'), // Termina el 16 de junio a las 23:59:59
+    label: 'Hasta el 16 de junio',
+    detailLabel: 'Hasta 16 jun',
+  },
+  {
+    id: 'evento',
+    name: 'Hasta el día del evento',
+    price: 200000,
+    formattedPrice: '$200.000',
+    deadline: new Date('2026-06-25T08:00:00-05:00'), // Termina al iniciar el evento (25 de junio a las 8:00 AM)
+    label: 'Hasta el día del evento',
+    detailLabel: 'Hasta el evento',
+  },
+];
+
+export function getActivePriceTier(now = Date.now()): PriceTier {
+  for (const tier of PRICE_TIERS) {
+    if (now < tier.deadline.getTime()) {
+      return tier;
+    }
+  }
+  return PRICE_TIERS[PRICE_TIERS.length - 1];
+}
+
 function useCountdown(target: Date) {
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
@@ -564,7 +616,7 @@ function PendingPayment({
       {/* Info del equipo */}
       <div className="pending-team">{data.nombre_equipo || 'Equipo'}</div>
       <div className="pending-meta">
-        ${(data.total_cop ?? 120000).toLocaleString('es-CO')} COP · {(data.num_atletas ?? 3)} atletas
+        ${(data.total_cop ?? getActivePriceTier().price).toLocaleString('es-CO')} COP · {(data.num_atletas ?? 3)} atletas
         <span style={{ margin: '0 8px', opacity: 0.4 }}>·</span>
         Registrado {tiempoAtras(data.guardado_en)}
       </div>
@@ -913,6 +965,7 @@ function Countdown() {
    HERO
    ============================================================ */
 function Hero() {
+  const activeTier = useMemo(() => getActivePriceTier(), []);
   const pillContainer = {
     hidden: { opacity: 0 },
     show: {
@@ -959,7 +1012,9 @@ function Hero() {
             transition={{ type: 'spring', damping: 15, stiffness: 100, delay: 0.15 }}
           >
             <span className="dot" />
-            <span className="pre">Preventa abierta</span>
+            <span className="pre">
+              {activeTier.id === 'preventa' ? 'Preventa abierta' : 'Inscripciones abiertas'}
+            </span>
             <span className="sep" />
             <span>25 + 26 Junio · Cucuta</span>
           </motion.div>
@@ -1252,6 +1307,8 @@ function Prizes() {
    REGISTER SECTION
    ============================================================ */
 function Register() {
+  const activeTier = useMemo(() => getActivePriceTier(), []);
+
   return (
     <section className="register" id="inscripcion">
       <div className="wrap">
@@ -1265,35 +1322,39 @@ function Register() {
         <div className="form-shell">
           <aside className="form-side">
             <div className="photo">
-              <span className="photo-tag">★ Preventa activa</span>
+              <span className="photo-tag">
+                {activeTier.id === 'preventa' ? '★ Preventa activa' : '★ Inscripción activa'}
+              </span>
               <img src={IMG.formSide} alt="" loading="lazy" />
               <div className="photo-title">Asegura tu cupo<br />antes que se acabe</div>
             </div>
             <div className="body">
               <h3>Precios por equipo</h3>
               <div className="price-block">
-                <div className="price-row price-tier active-tier">
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ background: 'var(--accent)', color: 'var(--accent-ink)', fontSize: 9, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '2px 6px', borderRadius: 4, fontFamily: 'JetBrains Mono, monospace' }}>ACTIVO</span>
-                    Preventa · hasta 6 jun
-                  </span>
-                  <span style={{ color: 'var(--accent)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>$120.000</span>
-                </div>
-                <div className="price-row price-tier">
-                  <span>Hasta el 16 de junio</span>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>$150.000</span>
-                </div>
-                <div className="price-row price-tier">
-                  <span>Hasta el día del evento</span>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>$200.000</span>
-                </div>
+                {PRICE_TIERS.map((tier) => {
+                  const isActive = activeTier.id === tier.id;
+                  const isExpired = Date.now() >= tier.deadline.getTime();
+                  return (
+                    <div key={tier.id} className={`price-row price-tier ${isActive ? 'active-tier' : ''} ${isExpired ? 'expired-tier' : ''}`}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                        {isActive && (
+                          <span style={{ background: 'var(--accent)', color: 'var(--accent-ink)', fontSize: 9, fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase', padding: '2px 6px', borderRadius: 4, fontFamily: 'JetBrains Mono, monospace' }}>ACTIVO</span>
+                        )}
+                        {tier.label}
+                      </span>
+                      <span style={isActive ? { color: 'var(--accent)', fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 } : { fontFamily: 'JetBrains Mono, monospace' }}>
+                        {tier.formattedPrice}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
               <div className="price-total">
                 <div>
                   <div className="lab">Precio actual</div>
                   <div style={{ fontSize: 13, color: 'var(--ink-muted)', fontFamily: 'JetBrains Mono, monospace', letterSpacing: '.10em', textTransform: 'uppercase', marginTop: 4 }}>3 personas · COP</div>
                 </div>
-                <div className="val">$120.000<small>Hasta 6 jun</small></div>
+                <div className="val">{activeTier.formattedPrice}<small>{activeTier.detailLabel}</small></div>
               </div>
             </div>
           </aside>
@@ -1343,7 +1404,7 @@ function Contact() {
             <div className="ic-wrap"><Icon.Whatsapp /></div>
             <div className="k">WhatsApp</div>
             <div className="v">322 217 7207</div>
-            <div className="d">Coordinamos pagos en preventa y resolvemos dudas de inmediato.</div>
+            <div className="d">Coordinamos pagos y resolvemos dudas de inmediato.</div>
             <Icon.Arrow className="arrow" style={{ width: 22, height: 22 }} />
           </motion.a>
         </motion.div>

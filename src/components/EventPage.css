@@ -1298,6 +1298,11 @@
   color: var(--ink);
 }
 
+.ep-root .price-row.price-tier.expired-tier {
+  text-decoration: line-through;
+  opacity: 0.35;
+}
+
 .ep-root .price-block .price-tier + .price-tier {
   border-top: 1px solid var(--line);
 }
