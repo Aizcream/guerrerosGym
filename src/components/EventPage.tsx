@@ -688,11 +688,16 @@ function RegistrationForm() {
   const [wompiReturnId, setWompiReturnId] = useState<string | null>(null);
   // Inscripción guardada en localStorage (pago pendiente o rechazado)
   const [pendiente, setPendiente] = useState<InscripcionGuardada | null>(null);
+  const [bypassKey, setBypassKey] = useState<string | null>(null);
 
   // ── Inicialización: retorno de Wompi + localStorage ────────
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('inscripcion_id');
+    const bypass = params.get('bypass_key');
+    if (bypass) {
+      setBypassKey(bypass);
+    }
     if (id) {
       // Wompi redirigió de vuelta → PaymentStatus se encarga
       setWompiReturnId(id);
@@ -727,7 +732,10 @@ function RegistrationForm() {
 
     setApiLoading(true);
     try {
-    const payload = buildPayload(teamName, members, categoria as 'Principiante' | 'Avanzado');
+      const payload = {
+        ...buildPayload(teamName, members, categoria as 'Principiante' | 'Avanzado'),
+        bypass_key: bypassKey
+      };
       const result = await postInscripcion(payload);
       // Guardar ANTES de redirigir para poder recuperar si el pago falla
       guardarInscripcion(result, teamName);

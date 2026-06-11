@@ -49,6 +49,7 @@ export interface InscripcionPayload {
   /** Categoría en la que compite el equipo: 'Principiante' | 'Avanzado' */
   categoria: 'Principiante' | 'Avanzado';
   atletas: AtletaPayload[];
+  bypass_key?: string | null;
 }
 
 // ---------------------------------------------------------------------------
