@@ -58,6 +58,8 @@
   flex-direction: column;
   gap: 1rem; /* Reducido de 1.5rem para juntar el texto */
   max-width: 600px;
+  position: relative;
+  z-index: 2; /* Asegura que los textos y botones estén por encima del atleta */
 }
 
 .hero-tag {
@@ -155,13 +157,14 @@
 .hero-image-placeholder {
   position: absolute;
   bottom: -60px;
-  right: 15%; /* Alineado hacia la derecha */
-  width: 140%; /* Suficientemente grande para llenar el lado derecho */
+  right: -5%; /* Desplazado hacia la derecha para liberar el contenido izquierdo */
+  width: 135%; /* Tamaño imponente pero balanceado */
   display: flex;
   justify-content: center;
   align-items: flex-end;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
+  transition: all 0.3s ease;
 }
 
 .hero-image {
@@ -194,6 +197,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   position: relative;
   overflow: hidden;
+  z-index: 2; /* Asegura estar sobre el atleta */
 }
 
 .features-card::before {
@@ -333,5 +337,13 @@
   .hero-bottom-bar {
     gap: 1rem;
     justify-content: flex-start;
+  }
+
+  .hero-right-side {
+    min-height: 420px;
+  }
+
+  .hero-image {
+    max-height: 480px;
   }
 }
