@@ -22,12 +22,16 @@ export default function Header() {
       <nav>
         <ul className="nav-links">
           {navItems.map((item, index) => (
-            <li key={index}>
+            <li key={index} className={item.highlight ? 'nav-item-reto' : ''}>
               <a 
                 href={item.href} 
                 className={`nav-link ${item.highlight ? 'nav-link-reto' : ''}`}
               >
-                {item.label}
+                {item.highlight ? (
+                  <span>RETO <span className="hide-mobile">2026</span> 🏆</span>
+                ) : (
+                  item.label
+                )}
               </a>
             </li>
           ))}

@@ -23,12 +23,16 @@ const navItems = [
   <nav>
     <ul class="nav-links">
       {navItems.map((item) => (
-        <li>
+        <li class={item.highlight ? 'nav-item-reto' : ''}>
           <a
             href={item.href}
             class={`nav-link ${item.highlight ? 'nav-link-reto' : ''}`}
           >
-            {item.label}
+            {item.highlight ? (
+              <span>RETO <span class="hide-mobile">2026</span> 🏆</span>
+            ) : (
+              item.label
+            )}
           </a>
         </li>
       ))}

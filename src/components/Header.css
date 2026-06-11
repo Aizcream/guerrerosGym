@@ -121,8 +121,21 @@
     padding: 1rem 2rem;
   }
   
+  .header-container nav {
+    margin-right: 1.5rem;
+  }
+
   .nav-links {
-    display: none; /* Se oculta en mÃ³vil por ahora */
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .nav-links li {
+    display: none;
+  }
+
+  .nav-links li.nav-item-reto {
+    display: block;
   }
 }
 
@@ -134,6 +147,26 @@
   .logo-img {
     width: 40px;
     height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 1rem;
+  }
+
+  .header-container nav {
+    margin-right: 0.75rem;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .logo-text {
+    display: none;
   }
 }
 
