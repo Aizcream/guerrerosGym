@@ -110,7 +110,7 @@ export default function ConfirmationPage() {
     }
 
     // Realizar primera consulta
-    fetchStatus(insId);
+    fetchStatus(insId, txId);
   }, []);
 
   // 2. Controlar Polling cuando el estado es PENDING
@@ -122,7 +122,7 @@ export default function ConfirmationPage() {
     if (group === 'PENDING' && pollCount < MAX_POLLS) {
       pollIntervalRef.current = setTimeout(() => {
         setPollCount((prev) => prev + 1);
-        fetchStatus(inscripcionId, true);
+        fetchStatus(inscripcionId, transactionId, true);
       }, 4000); // Polling cada 4 segundos
     }
 
@@ -131,15 +131,15 @@ export default function ConfirmationPage() {
         clearTimeout(pollIntervalRef.current);
       }
     };
-  }, [estado, pollCount, inscripcionId]);
+  }, [estado, pollCount, inscripcionId, transactionId]);
 
   // 3. Consultar API
-  const fetchStatus = async (id: string, isPoll = false) => {
+  const fetchStatus = async (id: string, txId: string | null = null, isPoll = false) => {
     if (!isPoll) setLoading(true);
     setError(null);
 
     try {
-      const data = await getInscripcion(id);
+      const data = await getInscripcion(id, txId);
       setEstado(data);
 
       const group = getStatusGroup(data.estado);
@@ -166,7 +166,7 @@ export default function ConfirmationPage() {
   const handleManualCheck = () => {
     if (inscripcionId) {
       setPollCount(0); // Reiniciar intentos de polling
-      fetchStatus(inscripcionId);
+      fetchStatus(inscripcionId, transactionId);
     }
   };
 

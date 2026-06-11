@@ -148,9 +148,13 @@ export async function postInscripcion(
  * Llama a esto con el inscripcion_id presente en los query params de la URL.
  */
 export async function getInscripcion(
-  inscripcionId: number | string
+  inscripcionId: number | string,
+  wompiTxId?: string | null
 ): Promise<InscripcionEstado> {
-  return fetchJSON<InscripcionEstado>(`${ENDPOINT}/${inscripcionId}`);
+  const url = wompiTxId
+    ? `${ENDPOINT}/${inscripcionId}?wompi_tx_id=${encodeURIComponent(wompiTxId)}`
+    : `${ENDPOINT}/${inscripcionId}`;
+  return fetchJSON<InscripcionEstado>(url);
 }
 
 // ---------------------------------------------------------------------------
