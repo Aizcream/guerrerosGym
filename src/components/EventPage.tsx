@@ -236,12 +236,12 @@ export const PRICE_TIERS: PriceTier[] = [
   },
   {
     id: 'regular1',
-    name: 'Hasta el 16 de junio',
+    name: 'Hasta el 17 de junio',
     price: 150000,
     formattedPrice: '$150.000',
-    deadline: new Date('2026-06-17T00:00:00-05:00'), // Termina el 16 de junio a las 23:59:59
-    label: 'Hasta el 16 de junio',
-    detailLabel: 'Hasta 16 jun',
+    deadline: new Date('2026-06-18T00:00:00-05:00'), // Termina el 17 de junio a las 23:59:59
+    label: 'Hasta el 17 de junio',
+    detailLabel: 'Hasta 17 jun',
   },
   {
     id: 'evento',
