@@ -736,9 +736,19 @@ function RegistrationForm() {
         ...buildPayload(teamName, members, categoria as 'Principiante' | 'Avanzado'),
         bypass_key: bypassKey
       };
-      const result = await postInscripcion(payload);
+       const result = await postInscripcion(payload);
       // Guardar ANTES de redirigir para poder recuperar si el pago falla
       guardarInscripcion(result, teamName);
+
+      // Track InitiateCheckout in Meta Pixel
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'InitiateCheckout', {
+          content_name: 'Inscripción Guerreros Challenge',
+          value: Number(result.total_cop) || 0,
+          currency: 'COP'
+        });
+      }
+
       console.log('--- DIAGNÓSTICO DE REDIRECCIÓN A WOMPI ---');
       console.log('Respuesta completa de la API:', result);
       console.log('checkout_url recibida:', result.checkout_url);

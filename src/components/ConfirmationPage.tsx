@@ -80,6 +80,24 @@ export default function ConfirmationPage() {
 
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const MAX_POLLS = 12; // 12 polls * 4s = 48s max polling
+  const hasTrackedRef = useRef(false);
+
+  // Efecto para trackear conversión en Meta Pixel al completar la inscripción con éxito
+  useEffect(() => {
+    if (estado) {
+      const group = getStatusGroup(estado.estado);
+      if (group === 'SUCCESS' && !hasTrackedRef.current) {
+        hasTrackedRef.current = true;
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+          (window as any).fbq('track', 'CompleteRegistration', {
+            content_name: 'Inscripción Guerreros Challenge',
+            value: Number(estado.monto_total_cop) || 0,
+            currency: 'COP'
+          });
+        }
+      }
+    }
+  }, [estado]);
 
   // 1. Obtener parámetros de la URL e inicializar
   useEffect(() => {
