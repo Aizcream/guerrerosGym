@@ -78,7 +78,12 @@ export default function Planes() {
                 <li>Seguimiento de progreso</li>
               </ul>
               <div className="plan-footer">
-                <button className="btn-plan outline">ELEGIR PLAN</button>
+                <button 
+                  className="btn-plan outline"
+                  onClick={() => window.location.href = `/mensualidad?plan=${period === "Semestral" ? "semestral" : period === "Trimestral" ? "trimestral" : "mensual"}`}
+                >
+                  ELEGIR PLAN
+                </button>
               </div>
             </div>
 
@@ -101,7 +106,12 @@ export default function Planes() {
                 <li>Atención prioritaria</li>
               </ul>
               <div className="plan-footer">
-                <button className="btn-plan solid">ELEGIR PLAN</button>
+                <button 
+                  className="btn-plan solid"
+                  onClick={() => window.location.href = "/mensualidad?plan=personalizado"}
+                >
+                  ELEGIR PLAN
+                </button>
               </div>
             </div>
 
@@ -129,7 +139,12 @@ export default function Planes() {
                 Entrena en compañía y obtén los mejores descuentos.
               </p>
               <div className="plan-footer flex-grow">
-                <button className="btn-plan outline">VER OPCIONES</button>
+                <button 
+                  className="btn-plan outline"
+                  onClick={() => window.location.href = "/mensualidad?plan=familiar"}
+                >
+                  VER OPCIONES
+                </button>
               </div>
             </div>
           </div>
@@ -143,7 +158,10 @@ export default function Planes() {
                 <strong>$80.000 /MES</strong>
               </p>
             </div>
-            <button className="btn-plan outline est-btn">
+            <button 
+              className="btn-plan outline est-btn"
+              onClick={() => window.location.href = "/mensualidad?plan=estudiante"}
+            >
               VER CONDICIONES
             </button>
           </div>

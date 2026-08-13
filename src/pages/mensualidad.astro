@@ -1,0 +1,1266 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+---
+
+<Layout title="Guerreros Gym — Pago de Mensualidad">
+  <!-- Google Fonts Inter -->
+  <link
+    slot="head"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <Header />
+
+  <div class="wrap">
+    <div class="eyebrow" id="eyebrowText">Mensualidades y planes</div>
+    <h1 id="pageTitle">FORJA TU DISCIPLINA <span class="accent">SIN LÍMITES</span></h1>
+    <p class="sub" id="pageSub">Selecciona tu plan, completa tus datos de facturación y realiza tu pago seguro en línea para entrenar en el mejor templo del fitness.</p>
+
+    <form id="payForm">
+      <div class="layout">
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="sidebar">
+          <div class="hero-card">
+            <div class="hero-top">
+              <svg class="hero-icon" width="140" height="140" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M6.5 6.5 17.5 17.5M4 9l3-3M20 15l-3 3M2 11l3-3M22 13l-3 3M6.5 4 4 6.5M17.5 19.5 20 17"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+              <span class="hero-badge">Plan activo</span>
+              <div class="hero-title" id="sidebarTitle">Plan<br>Individual</div>
+              <div class="hero-sub" id="sidebarSub">Acceso completo a tu ritmo</div>
+            </div>
+            <div class="hero-body">
+              <div class="tier-label" id="sidebarOptionsLabel">Elige tu duración</div>
+              <div id="tierRows"></div>
+
+              <div class="hero-divider"></div>
+
+              <div class="total-label">Total a pagar</div>
+              <div class="total-value" id="totalValue">$130.000</div>
+              <div class="total-people" id="totalPeople">1 persona</div>
+
+              <button type="submit" class="pill-btn" id="sidebarSubmitBtn">
+                Confirmar y pagar
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="brand-row">
+            <div class="brand-logo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v6c0 5 4 9 9 9s9-4 9-9V7l-9-5Z"/></svg>
+            </div>
+            <div class="brand-text">
+              <b>GUERREROS GYM</b>
+              <span>Pago seguro de mensualidad</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- ============ MAIN ============ -->
+        <div class="main">
+          <!-- 01 Tus Datos -->
+          <div class="panel">
+            <div class="person-head">
+              <div class="person-num">01</div>
+              <div class="person-title">Tus datos</div>
+              <span class="person-tag">Titular</span>
+            </div>
+            <div class="grid2">
+              <div class="field">
+                <label>Nombres y apellidos</label>
+                <input type="text" id="nombres" placeholder="Juan Pérez" required />
+                <div class="err-msg">Ingresa tu nombre completo.</div>
+              </div>
+              <div class="field">
+                <label>Cédula</label>
+                <input type="text" id="cedula" inputmode="numeric" placeholder="1234567890" required />
+                <div class="err-msg">Ingresa un número de cédula válido.</div>
+              </div>
+              <div class="field">
+                <label>Correo electrónico</label>
+                <input type="email" id="email" placeholder="juan.perez@email.com" required />
+                <div class="err-msg">Ingresa un correo válido.</div>
+              </div>
+              <div class="field">
+                <label>Celular</label>
+                <input type="tel" id="celular" inputmode="numeric" placeholder="3001234567" required />
+                <div class="err-msg">Ingresa un celular válido.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 02 Acompañantes (Plan Familiar / Grupal) -->
+          <div id="familiarPanel" style="display:none;">
+            <div id="acompanantes"></div>
+
+            <button type="button" class="add-person-btn" id="addPersonBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Agregar persona <span class="price-hint" id="addPriceHint">— desde $100.000 c/u</span>
+            </button>
+
+            <div class="notice">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div class="notice-text">El titular queda como responsable de la cuenta. Cada acompañante necesita nombre y cédula para su registro. <b>Hasta 10 personas por plan.</b></div>
+            </div>
+          </div>
+
+          <!-- 02 Validación Estudiante -->
+          <div id="estudiantePanel" style="display:none;" class="panel">
+            <div class="person-head">
+              <div class="person-num">02</div>
+              <div class="person-title">Validación Estudiante</div>
+              <span class="person-tag">Requerido</span>
+            </div>
+            <p style="color:var(--muted); font-size:12.5px; margin-bottom:16px;">Sube una foto o PDF legible de tu carné estudiantil vigente o matrícula de la universidad para habilitar tu tarifa especial.</p>
+            <div class="field">
+              <label for="carnet_file">Foto / PDF del Carné Estudiantil *</label>
+              <input type="file" id="carnet_file" accept="image/*,application/pdf" style="padding: 8px 10px;" />
+              <input type="hidden" id="carnet_foto" />
+              <div class="err-msg">Debes seleccionar y cargar tu carné estudiantil.</div>
+              <div id="file-preview-container" style="display:none; color:var(--ok); font-size:12.5px; font-weight:600; margin-top:8px; display:flex; align-items:center; gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                ¡Documento cargado correctamente!
+              </div>
+            </div>
+          </div>
+
+          <div class="notice" id="generalNotice">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div class="notice-text" id="generalNoticeText">Podrás renovar o cambiar de plan cuando quieras desde tu perfil. <b>El cobro se activa una vez confirmes el pago.</b></div>
+          </div>
+
+          <div class="submit-row">
+            <div class="terms-text">Al confirmar aceptas el reglamento del gimnasio, la política de tratamiento de datos y el consentimiento de uso de datos para el proceso de pago con Wompi.</div>
+            <button type="submit" class="pill-btn" id="submitBtn">
+              Confirmar y pagar
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+
+          <div class="status" id="status"></div>
+          <span class="toggle-json" id="toggleJson" style="display:none;">Ver payload enviado ▾</span>
+          <code id="jsonPreview" style="display:none;"></code>
+        </div>
+      </div>
+    </form>
+  </div>
+</Layout>
+
+<style is:global>
+  :root {
+    --bg: #050608;
+    --card: #0b0d14;
+    --card-2: #0e1119;
+    --line: rgba(255,255,255,.09);
+    --blue: #2f5aff;
+    --blue-2: #4d72ff;
+    --text: #ffffff;
+    --muted: #868da3;
+    --muted-2: #4d5468;
+    --danger: #ff5470;
+    --ok: #34d97a;
+    --radius: 16px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    font-family: 'Inter', sans-serif !important;
+    min-height: 100vh;
+    padding: 52px 24px 120px !important;
+  }
+
+  .wrap {
+    max-width: 1020px;
+    margin: 80px auto 0;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--blue-2);
+    font-weight: 800;
+    font-size: 11.5px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 20px;
+    height: 1.5px;
+    background: var(--blue-2);
+  }
+
+  h1 {
+    font-weight: 900;
+    font-size: clamp(26px, 3.8vw, 36px);
+    line-height: 1.1;
+    letter-spacing: -.01em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  h1 .accent {
+    color: var(--blue-2);
+  }
+
+  .sub {
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.65;
+    max-width: 600px;
+    margin-bottom: 36px;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 840px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .sidebar {
+      position: static !important;
+    }
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    position: sticky;
+    top: 24px;
+  }
+
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+
+  .hero-top {
+    position: relative;
+    padding: 22px 22px 26px;
+    background:
+      radial-gradient(120% 140% at 15% 0%, rgba(47,90,255,.35), transparent 55%),
+      radial-gradient(90% 120% at 100% 100%, rgba(47,90,255,.16), transparent 60%),
+      linear-gradient(160deg, #10131f 0%, #070810 100%);
+    overflow: hidden;
+  }
+
+  .hero-top::after {
+    content: '';
+    position: absolute;
+    right: -30px;
+    bottom: -30px;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(255,255,255,.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-icon {
+    position: absolute;
+    right: -14px;
+    bottom: -14px;
+    opacity: .10;
+    color: #fff;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 6px 11px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+  }
+
+  .hero-title {
+    font-size: 22px;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.12;
+    position: relative;
+    z-index: 1;
+    color: var(--text);
+  }
+
+  .hero-title span {
+    color: var(--blue-2);
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-body {
+    padding: 20px 22px 22px;
+  }
+
+  .tier-label {
+    color: var(--muted-2);
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 10px;
+  }
+
+  .tier-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 12px;
+    border-radius: 9px;
+    margin-bottom: 6px;
+    border: 1px solid var(--line);
+    font-size: 12.5px;
+    background: transparent;
+    width: 100%;
+    font-family: inherit;
+    cursor: default;
+    transition: .15s ease;
+  }
+
+  button.tier-row {
+    cursor: pointer;
+  }
+
+  button.tier-row:hover {
+    border-color: rgba(255,255,255,.22);
+  }
+
+  .tier-row .t-name {
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .tier-row .t-price {
+    color: #c7cad6;
+    font-weight: 700;
+  }
+
+  .tier-row.active {
+    background: rgba(47,90,255,.1);
+    border-color: rgba(47,90,255,.35);
+  }
+
+  .tier-row.active .t-name {
+    color: #fff;
+  }
+
+  .tier-row.active .t-price {
+    color: var(--blue-2);
+  }
+
+  .tier-row.active .t-name::before {
+    content: '✓ ';
+    color: var(--blue-2);
+  }
+
+  .hero-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 18px 0;
+  }
+
+  .total-label {
+    color: var(--muted);
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 6px;
+  }
+
+  .total-value {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+    transition: transform .15s ease;
+    color: var(--text);
+  }
+
+  .total-value.bump {
+    transform: scale(1.06);
+  }
+
+  .total-value small {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .total-people {
+    color: var(--blue-2);
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-top: 6px;
+    margin-bottom: 20px;
+  }
+
+  .pill-btn {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 800;
+    font-size: 13.5px;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 15px;
+    transition: .15s ease;
+    background: var(--blue);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .pill-btn:hover:not(:disabled) {
+    background: var(--blue-2);
+  }
+
+  .pill-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 6px;
+    color: var(--muted);
+  }
+
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-text b {
+    display: block;
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: .02em;
+  }
+
+  .brand-text span {
+    font-size: 11px;
+    color: var(--muted-2);
+  }
+
+  /* ============ MAIN FORM ============ */
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-bottom: 14px;
+  }
+
+  .person-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .person-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1.5px solid var(--blue);
+    color: var(--blue-2);
+    font-weight: 800;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .person-title {
+    font-weight: 800;
+    font-size: 14px;
+    text-transform: uppercase;
+    flex: 1;
+    color: var(--text);
+  }
+
+  .person-tag {
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--blue-2);
+    border: 1px solid rgba(77,114,255,.4);
+    border-radius: 5px;
+    padding: 3px 7px;
+  }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px;
+  }
+
+  .remove-btn:hover {
+    color: var(--danger);
+  }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 560px) {
+    .grid2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .field {
+    margin-bottom: 14px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .field label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+  }
+
+  .field label .opt {
+    color: var(--muted-2);
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .field input {
+    width: 100%;
+    background: var(--card-2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 8px;
+    padding: 11px 13px;
+    transition: .15s;
+  }
+
+  .field input:focus {
+    outline: none;
+    border-color: var(--blue-2);
+  }
+
+  .field input::placeholder {
+    color: var(--muted-2);
+  }
+
+  .field input.err {
+    border-color: var(--danger);
+  }
+
+  .err-msg {
+    color: var(--danger);
+    font-size: 11.5px;
+    margin-top: 4px;
+    display: none;
+  }
+
+  .field.invalid .err-msg {
+    display: block;
+  }
+
+  .add-person-btn {
+    width: 100%;
+    border: 1.5px dashed rgba(255,255,255,.22);
+    background: transparent;
+    color: var(--blue-2);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    padding: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    transition: .15s ease;
+    margin-bottom: 22px;
+  }
+
+  .add-person-btn:hover:not(:disabled) {
+    border-color: var(--blue-2);
+    background: rgba(47,90,255,.06);
+  }
+
+  .add-person-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+
+  .add-person-btn .price-hint {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11.5px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .notice {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(47,90,255,.06);
+    border: 1px solid rgba(47,90,255,.22);
+    border-radius: 12px;
+    padding: 15px 17px;
+    margin-bottom: 22px;
+  }
+
+  .notice svg {
+    color: var(--blue-2);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .notice-text {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+
+  .notice-text b {
+    color: #c7cad6;
+  }
+
+  .submit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .terms-text {
+    color: var(--muted-2);
+    font-size: 11.5px;
+    line-height: 1.6;
+    max-width: 420px;
+  }
+
+  .submit-row .pill-btn {
+    width: auto;
+    padding: 15px 28px;
+  }
+
+  .status {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .status.show {
+    display: flex;
+  }
+
+  .status.ok {
+    background: rgba(52,217,122,.08);
+    border: 1px solid rgba(52,217,122,.28);
+    color: #7cf0ac;
+  }
+
+  .status.error {
+    background: rgba(255,84,112,.08);
+    border: 1px solid rgba(255,84,112,.28);
+    color: #ff8fa3;
+  }
+
+  .status.loading {
+    background: rgba(47,90,255,.08);
+    border: 1px solid rgba(47,90,255,.28);
+    color: var(--blue-2);
+  }
+
+  code {
+    display: block;
+    background: var(--card-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 11.5px;
+    color: #a8b3d4;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin-top: 14px;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    max-height: 220px;
+    overflow: auto;
+  }
+
+  .toggle-json {
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    display: inline-block;
+  }
+</style>
+
+<script>
+  import { pagarMensualidad } from '../lib/mensualidadesApi';
+
+  const TRASH_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
+  const PLANS: any = {
+    individual: {
+      name: 'Individual',
+      sub: 'Acceso completo a tu ritmo',
+      durations: {
+        mensual:    { price: 130000, label: 'Mensual',    period: '/mes' },
+        trimestral: { price: 345000, label: 'Trimestral', period: '/trim' },
+        semestral:  { price: 600000, label: 'Semestral',  period: '/sem' },
+      }
+    },
+    personalizado: {
+      name: 'Personalizado',
+      sub: 'Entrenamiento 1 a 1 de alto rendimiento',
+      price: 350000,
+      period: '/mes'
+    },
+    familiar: {
+      name: 'Familiar',
+      sub: 'Entrena en compañía y ahorra por persona',
+      tiers: [
+        { min: 2, max: 2, slug: 'duo',      name: '2 personas', per: 120000 },
+        { min: 3, max: 3, slug: 'trio',     name: '3 personas', per: 110000 },
+        { min: 4, max: Infinity, slug: 'familiar', name: '4 o más', per: 100000 },
+      ]
+    },
+    estudiante: {
+      name: 'Estudiante',
+      sub: 'Tarifa especial para universitarios y colegios',
+      price: 80000,
+      period: '/mes'
+    }
+  };
+
+  const MAX_PEOPLE = 10;
+  const fmt = (n: number) => '$' + n.toLocaleString('es-CO');
+
+  function tierFor(count: number) {
+    return PLANS.familiar.tiers.find((t: any) => count >= t.min && count <= t.max) || PLANS.familiar.tiers[PLANS.familiar.tiers.length - 1];
+  }
+
+  // Estado dinámico
+  let activePlan = 'individual';
+  let selectedDuration = 'mensual'; // Para plan individual
+  let groupCount = 2; // Para plan familiar
+
+  const form = document.getElementById('payForm') as HTMLFormElement;
+  const statusEl = document.getElementById('status') as HTMLDivElement;
+  const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+  const sidebarSubmitBtn = document.getElementById('sidebarSubmitBtn') as HTMLButtonElement;
+
+  const acompEl = document.getElementById('acompanantes') as HTMLDivElement;
+  const addBtn = document.getElementById('addPersonBtn') as HTMLButtonElement;
+
+  const carnetFileInput = document.getElementById('carnet_file') as HTMLInputElement;
+  const carnetFotoHidden = document.getElementById('carnet_foto') as HTMLInputElement;
+  const filePreview = document.getElementById('file-preview-container') as HTMLDivElement;
+
+  // Manejo de carga de carné
+  if (carnetFileInput) {
+    carnetFileInput.addEventListener('change', (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (carnetFotoHidden) {
+          carnetFotoHidden.value = reader.result as string;
+        }
+        if (filePreview) {
+          filePreview.style.display = 'flex';
+        }
+        carnetFileInput.classList.remove('err');
+        const field = carnetFileInput.closest('.field');
+        if (field) field.classList.remove('invalid');
+      };
+      reader.onerror = () => {
+        if (statusEl) {
+          statusEl.className = 'status error show';
+          statusEl.textContent = 'Error al cargar el archivo. Intenta con un archivo más ligero.';
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Renderizado dinámico de la barra lateral
+  function updateSidebarHeader() {
+    const titleEl = document.getElementById('sidebarTitle');
+    const subEl = document.getElementById('sidebarSub');
+    const labelEl = document.getElementById('sidebarOptionsLabel');
+
+    if (!titleEl || !subEl || !labelEl) return;
+
+    if (activePlan === 'individual') {
+      titleEl.innerHTML = 'Plan<br>Individual';
+      subEl.textContent = PLANS.individual.sub;
+      labelEl.textContent = 'Elige tu duración';
+    } else if (activePlan === 'personalizado') {
+      titleEl.innerHTML = 'Plan<br>Personalizado';
+      subEl.textContent = PLANS.personalizado.sub;
+      labelEl.textContent = 'Suscripción';
+    } else if (activePlan === 'familiar') {
+      titleEl.innerHTML = 'Plan<br>Familiar';
+      subEl.textContent = PLANS.familiar.sub;
+      labelEl.textContent = 'Precio por persona';
+    } else if (activePlan === 'estudiante') {
+      titleEl.innerHTML = 'Plan<br>Estudiante';
+      subEl.textContent = PLANS.estudiante.sub;
+      labelEl.textContent = 'Suscripción';
+    }
+  }
+
+  function renderTierRows() {
+    const tierRowsEl = document.getElementById('tierRows');
+    if (!tierRowsEl) return;
+
+    if (activePlan === 'individual') {
+      tierRowsEl.innerHTML = Object.entries(PLANS.individual.durations).map(([slug, d]: any) => `
+        <button type="button" class="tier-row ${slug === selectedDuration ? 'active' : ''}" data-slug="${slug}">
+          <span class="t-name">${d.label}</span>
+          <span class="t-price">${fmt(d.price)} ${d.period}</span>
+        </button>
+      `).join('');
+
+      tierRowsEl.querySelectorAll('.tier-row').forEach(row => {
+        row.addEventListener('click', () => {
+          selectedDuration = (row as HTMLElement).dataset.slug || 'mensual';
+          renderAll(true);
+        });
+      });
+    } else if (activePlan === 'familiar') {
+      const activeTier = tierFor(groupCount).slug;
+      tierRowsEl.innerHTML = PLANS.familiar.tiers.map((t: any) => `
+        <div class="tier-row ${t.slug === activeTier ? 'active' : ''}">
+          <span class="t-name">${t.name}</span>
+          <span class="t-price">${fmt(t.per)} c/u</span>
+        </div>
+      `).join('');
+    } else if (activePlan === 'personalizado') {
+      tierRowsEl.innerHTML = `
+        <div class="tier-row active">
+          <span class="t-name">Mensual Personalizado</span>
+          <span class="t-price">${fmt(PLANS.personalizado.price)} ${PLANS.personalizado.period}</span>
+        </div>
+      `;
+    } else if (activePlan === 'estudiante') {
+      tierRowsEl.innerHTML = `
+        <div class="tier-row active">
+          <span class="t-name">Mensual Estudiante</span>
+          <span class="t-price">${fmt(PLANS.estudiante.price)} ${PLANS.estudiante.period}</span>
+        </div>
+      `;
+    }
+  }
+
+  function renderTotals(bump: boolean) {
+    const totalEl = document.getElementById('totalValue');
+    const totalPeopleEl = document.getElementById('totalPeople');
+    const addPriceHintEl = document.getElementById('addPriceHint');
+    if (!totalEl) return;
+
+    let price = 0;
+    let periodText = '/mes';
+    let peopleText = '1 persona';
+
+    if (activePlan === 'individual') {
+      const d = PLANS.individual.durations[selectedDuration];
+      price = d.price;
+      periodText = d.period;
+      peopleText = '1 persona';
+    } else if (activePlan === 'personalizado') {
+      price = PLANS.personalizado.price;
+      periodText = PLANS.personalizado.period;
+      peopleText = '1 persona';
+    } else if (activePlan === 'estudiante') {
+      price = PLANS.estudiante.price;
+      periodText = PLANS.estudiante.period;
+      peopleText = '1 persona';
+    } else if (activePlan === 'familiar') {
+      const tier = tierFor(groupCount);
+      price = tier.per * groupCount;
+      periodText = '/mes';
+      peopleText = `${groupCount} personas en el plan · ${fmt(tier.per)} c/u`;
+      if (addPriceHintEl) {
+        addPriceHintEl.textContent = `— ${fmt(tierFor(groupCount + 1).per)} c/u`;
+      }
+    }
+
+    totalEl.innerHTML = `${fmt(price)} <small>${periodText}</small>`;
+    if (totalPeopleEl) {
+      totalPeopleEl.textContent = peopleText;
+    }
+
+    if (bump) {
+      totalEl.classList.remove('bump');
+      void totalEl.offsetWidth;
+      totalEl.classList.add('bump');
+    }
+  }
+
+  function renderAcompanantes() {
+    if (!acompEl) return;
+    acompEl.innerHTML = '';
+    for (let i = 0; i < groupCount - 1; i++) {
+      const isLast = i === groupCount - 2;
+      acompEl.insertAdjacentHTML('beforeend', `
+        <div class="panel" data-idx="${i}">
+          <div class="person-head">
+            <div class="person-num">${String(i + 2).padStart(2, '0')}</div>
+            <div class="person-title">Acompañante ${i + 1}</div>
+            ${isLast ? `<button type="button" class="remove-btn" data-remove>${TRASH_SVG} Quitar</button>` : ''}
+          </div>
+          <div class="grid2">
+            <div class="field"><label>Nombres y apellidos</label><input type="text" class="int-nombre" placeholder="Nombre completo" required><div class="err-msg">Requerido.</div></div>
+            <div class="field"><label>Cédula</label><input type="text" class="int-cedula" inputmode="numeric" placeholder="Número de cédula" required><div class="err-msg">Requerido.</div></div>
+            <div class="field"><label>Correo <span class="opt">(opcional)</span></label><input type="email" class="int-email" placeholder="correo@email.com"></div>
+            <div class="field"><label>Celular <span class="opt">(opcional)</span></label><input type="tel" class="int-celular" inputmode="numeric" placeholder="3001234567"></div>
+          </div>
+        </div>
+      `);
+    }
+    acompEl.querySelectorAll('[data-remove]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (groupCount > 2) {
+          groupCount--;
+          renderAll(true);
+        }
+      });
+    });
+    if (addBtn) {
+      addBtn.disabled = groupCount >= MAX_PEOPLE;
+    }
+  }
+
+  function renderAll(bump: boolean) {
+    updateSidebarHeader();
+    renderTierRows();
+    renderTotals(bump);
+    if (activePlan === 'familiar') {
+      renderAcompanantes();
+    }
+  }
+
+  // Evento agregar persona para el plan familiar
+  if (addBtn) {
+    addBtn.addEventListener('click', () => {
+      if (groupCount < MAX_PEOPLE) {
+        groupCount++;
+        renderAll(true);
+      }
+    });
+  }
+
+  function switchPlan(plan: string) {
+    activePlan = plan;
+
+    // Toggle paneles visibles
+    const familiarPanel = document.getElementById('familiarPanel');
+    const estudiantePanel = document.getElementById('estudiantePanel');
+    const generalNoticeText = document.getElementById('generalNoticeText');
+
+    const eyebrowEl = document.getElementById('eyebrowText');
+    const pageTitleEl = document.getElementById('pageTitle');
+    const pageSubEl = document.getElementById('pageSub');
+
+    if (familiarPanel) {
+      familiarPanel.style.display = activePlan === 'familiar' ? 'block' : 'none';
+    }
+    if (estudiantePanel) {
+      estudiantePanel.style.display = activePlan === 'estudiante' ? 'block' : 'none';
+    }
+
+    // Actualizar dinámicamente títulos y subtítulos
+    if (eyebrowEl && pageTitleEl && pageSubEl) {
+      if (activePlan === 'individual') {
+        eyebrowEl.textContent = 'Mensualidad · Plan individual';
+        pageTitleEl.innerHTML = 'COMPLETA TUS <span class="accent">DATOS</span>';
+        pageSubEl.textContent = 'Elige la duración de tu plan y diligencia tus datos — esta información se usa para tu registro en el gimnasio y el proceso de pago con Wompi.';
+      } else if (activePlan === 'personalizado') {
+        eyebrowEl.textContent = 'Mensualidad · Plan personalizado';
+        pageTitleEl.innerHTML = 'COMPLETA TUS <span class="accent">DATOS</span>';
+        pageSubEl.textContent = 'Inicia tu entrenamiento personalizado 1 a 1 y diligencia tus datos — esta información se usa para tu registro en el gimnasio y el proceso de pago con Wompi.';
+      } else if (activePlan === 'familiar') {
+        eyebrowEl.textContent = 'Mensualidad · Plan familiar';
+        pageTitleEl.innerHTML = 'COMPLETA LOS DATOS DE TU <span class="accent">EQUIPO</span>';
+        pageSubEl.textContent = 'Diligencia los datos de cada integrante con cuidado — esta información se usa para tu registro en el gimnasio y el proceso de pago con Wompi.';
+      } else if (activePlan === 'estudiante') {
+        eyebrowEl.textContent = 'Mensualidad · Plan estudiante';
+        pageTitleEl.innerHTML = 'COMPLETA TUS <span class="accent">DATOS</span>';
+        pageSubEl.textContent = 'Presenta tu documento estudiantil vigente y diligencia tus datos — esta información se usa para tu registro en el gimnasio y el proceso de pago con Wompi.';
+      }
+    }
+
+    if (generalNoticeText) {
+      if (activePlan === 'estudiante') {
+        generalNoticeText.innerHTML = 'El equipo de Guerreros Gym validará tu carné antes de tu ingreso al establecimiento. <b>El cobro se activa una vez confirmes el pago.</b>';
+      } else if (activePlan === 'personalizado') {
+        generalNoticeText.innerHTML = 'Una vez confirmado el pago, nos pondremos en contacto contigo para coordinar tus horarios y entrenador. <b>El cobro se activa hoy.</b>';
+      } else {
+        generalNoticeText.innerHTML = 'Podrás renovar o cambiar de plan cuando quieras desde tu perfil. <b>El cobro se activa una vez confirmes el pago.</b>';
+      }
+    }
+  }
+
+  // Validación
+  function validateField(input: HTMLInputElement) {
+    // Si el input no está visible en pantalla, no lo validamos (pasa directo)
+    if (input.offsetParent === null) {
+      return true;
+    }
+    const field = input.closest('.field');
+    const valid = input.checkValidity() && input.value.trim() !== '';
+    if (field) field.classList.toggle('invalid', !valid);
+    input.classList.toggle('err', !valid);
+    return valid;
+  }
+
+  function buildPayload() {
+    const isLocal = window.location.hostname === 'localhost' || 
+                    window.location.hostname === '127.0.0.1' || 
+                    window.location.hostname.startsWith('192.168.');
+    
+    const redirectUrl = isLocal 
+      ? 'https://guerrerosgym.com/confirmacion-pago' 
+      : window.location.origin + '/confirmacion-pago';
+
+    const payload: any = {
+      nombres_apellidos: (document.getElementById('nombres') as HTMLInputElement).value.trim(),
+      cedula: (document.getElementById('cedula') as HTMLInputElement).value.trim(),
+      email: (document.getElementById('email') as HTMLInputElement).value.trim(),
+      celular: (document.getElementById('celular') as HTMLInputElement).value.trim(),
+      redirect_url: redirectUrl
+    };
+
+    if (activePlan === 'individual') {
+      payload.plan = selectedDuration;
+    } else if (activePlan === 'personalizado') {
+      payload.plan = 'personalizado';
+    } else if (activePlan === 'estudiante') {
+      payload.plan = 'estudiante';
+      payload.carnet_foto = carnetFotoHidden ? carnetFotoHidden.value : '';
+    } else if (activePlan === 'familiar') {
+      const tier = tierFor(groupCount);
+      payload.plan = tier.slug;
+      payload.integrantes = Array.from(document.querySelectorAll('#acompanantes .panel')).map(row => ({
+        nombres_apellidos: (row.querySelector('.int-nombre') as HTMLInputElement).value.trim(),
+        cedula: (row.querySelector('.int-cedula') as HTMLInputElement).value.trim(),
+        email: (row.querySelector('.int-email') as HTMLInputElement).value.trim() || undefined,
+        celular: (row.querySelector('.int-celular') as HTMLInputElement).value.trim() || undefined,
+      }));
+    }
+
+    return payload;
+  }
+
+  if (form) {
+    form.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.hasAttribute('required')) {
+        validateField(target);
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let valid = true;
+
+      // Validar inputs requeridos visibles
+      form.querySelectorAll('input[required]').forEach(inp => {
+        if (!validateField(inp as HTMLInputElement)) valid = false;
+      });
+
+      // Validar carné si es estudiante
+      if (activePlan === 'estudiante') {
+        const carnetFoto = carnetFotoHidden ? carnetFotoHidden.value : '';
+        if (!carnetFoto) {
+          valid = false;
+          if (carnetFileInput) {
+            carnetFileInput.classList.add('err');
+            const field = carnetFileInput.closest('.field');
+            if (field) field.classList.add('invalid');
+          }
+        }
+      }
+
+      if (!valid) {
+        if (statusEl) {
+          statusEl.className = 'status error show';
+          statusEl.textContent = 'Revisa los campos marcados en rojo antes de continuar.';
+        }
+        return;
+      }
+
+      const payload = buildPayload();
+      
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Procesando…';
+      }
+      if (sidebarSubmitBtn) {
+        sidebarSubmitBtn.disabled = true;
+        sidebarSubmitBtn.textContent = 'Procesando…';
+      }
+
+      if (statusEl) {
+        statusEl.className = 'status loading show';
+        statusEl.textContent = 'Generando tu link de pago seguro con Wompi…';
+      }
+
+      try {
+        const data = await pagarMensualidad(payload as any);
+        if (statusEl) {
+          statusEl.className = 'status ok show';
+          statusEl.textContent = data.checkout_url ? 'Todo listo. Redirigiendo al checkout de Wompi…' : 'Solicitud enviada correctamente.';
+        }
+        if (data.checkout_url) window.location.href = data.checkout_url;
+      } catch (err: any) {
+        if (statusEl) {
+          statusEl.className = 'status error show';
+          statusEl.textContent = err.message || 'No pudimos conectar con el servidor de pagos. Intenta de nuevo en unos segundos.';
+        }
+      } finally {
+        const btnHtml = 'Confirmar y pagar <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = btnHtml;
+        }
+        if (sidebarSubmitBtn) {
+          sidebarSubmitBtn.disabled = false;
+          sidebarSubmitBtn.innerHTML = btnHtml;
+        }
+      }
+
+      const jsonPreview = document.getElementById('jsonPreview');
+      const toggle = document.getElementById('toggleJson');
+      if (jsonPreview && toggle) {
+        jsonPreview.textContent = JSON.stringify(payload, null, 2);
+        toggle.style.display = 'inline-block';
+        toggle.onclick = () => {
+          const open = jsonPreview.style.display === 'block';
+          jsonPreview.style.display = open ? 'none' : 'block';
+          toggle.textContent = open ? 'Ver payload enviado ▾' : 'Ocultar payload ▴';
+        };
+      }
+    });
+  }
+
+  // Leer plan inicial de la URL (?plan=xxx o ?plan=duo/trio/familiar)
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialParam = urlParams.get('plan') || 'individual';
+
+  let defaultPlan = 'individual';
+  if (['individual', 'mensual', 'trimestral', 'semestral'].includes(initialParam)) {
+    defaultPlan = 'individual';
+    if (['mensual', 'trimestral', 'semestral'].includes(initialParam)) {
+      selectedDuration = initialParam;
+    }
+  } else if (initialParam === 'personalizado') {
+    defaultPlan = 'personalizado';
+  } else if (['familiar', 'duo', 'trio'].includes(initialParam)) {
+    defaultPlan = 'familiar';
+    if (initialParam === 'duo') groupCount = 2;
+    if (initialParam === 'trio') groupCount = 3;
+    if (initialParam === 'familiar') groupCount = 2;
+  } else if (initialParam === 'estudiante') {
+    defaultPlan = 'estudiante';
+  }
+
+  const peopleParam = parseInt(urlParams.get('personas') || '', 10);
+  if (peopleParam >= 2 && peopleParam <= MAX_PEOPLE) {
+    groupCount = peopleParam;
+  }
+
+  // Inicializar
+  switchPlan(defaultPlan);
+  renderAll(false);
+</script>

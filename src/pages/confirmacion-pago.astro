@@ -1,0 +1,439 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Confirmación de Pago | Guerreros Gym">
+  <link
+    slot="head"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <main class="page-container">
+    <div id="loading-state" class="state-panel">
+      <div class="spinner large"></div>
+      <h2>Verificando tu pago...</h2>
+      <p>Espera un momento mientras confirmamos la transacción con la pasarela de pagos Wompi.</p>
+    </div>
+
+    <div id="success-state" class="state-panel hidden">
+      <div class="icon-circle success">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <span class="badge success">PAGO CONFIRMADO</span>
+      <h1>¡Tu membresía está activa!</h1>
+      <p class="desc">Hemos verificado el pago correctamente. El recibo y comprobante de activación fueron enviados al correo registrado.</p>
+
+      <!-- Recibo / Ticket -->
+      <div class="receipt-ticket">
+        <div class="ticket-header">
+          <span class="gym-brand">GUERREROS GYM</span>
+          <span id="receipt-id" class="receipt-id">#——</span>
+        </div>
+        <div class="ticket-body">
+          <div class="ticket-row">
+            <span class="label">Titular</span>
+            <span id="receipt-name" class="val">——</span>
+          </div>
+          <div class="ticket-row">
+            <span class="label">Documento</span>
+            <span id="receipt-cedula" class="val">——</span>
+          </div>
+          <div class="ticket-row">
+            <span class="label">Plan Adquirido</span>
+            <span id="receipt-plan" class="val">——</span>
+          </div>
+          <div class="ticket-row">
+            <span class="label">Fecha</span>
+            <span id="receipt-date" class="val">——</span>
+          </div>
+          <div class="ticket-row total">
+            <span class="label">Total Pagado</span>
+            <span id="receipt-amount" class="val">——</span>
+          </div>
+        </div>
+        
+        <!-- Integrantes adicionales (se inyectan por JS si es grupal) -->
+        <div id="ticket-members-section" class="ticket-members hidden">
+          <h4>Acompañantes Registrados</h4>
+          <ul id="ticket-members-list"></ul>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <a href="/mensualidad" class="btn-primary">Volver al Inicio</a>
+      </div>
+    </div>
+
+    <div id="error-state" class="state-panel hidden">
+      <div class="icon-circle error">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </div>
+      <span class="badge error">TRANSACCIÓN CANCELADA o RECHAZADA</span>
+      <h1>No pudimos completar tu pago</h1>
+      <p id="error-message" class="desc">La pasarela Wompi rechazó la transacción. Verifica tus fondos, cupo disponible en tu tarjeta o medio de pago, e intenta nuevamente.</p>
+
+      <div class="action-row">
+        <a href="/mensualidad" class="btn-primary">Intentar de nuevo</a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .page-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .state-panel {
+    width: 100%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .state-panel h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 20px 0 8px;
+    text-transform: uppercase;
+  }
+
+  .state-panel h1 {
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 16px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+  }
+
+  .desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+  }
+
+  /* Círculos de estado */
+  .icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .icon-circle svg {
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+  }
+
+  .icon-circle.success {
+    background: rgba(16, 185, 129, 0.2);
+    border: 2px solid #10b981;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  }
+
+  .icon-circle.success svg {
+    color: #10b981;
+  }
+
+  .icon-circle.error {
+    background: rgba(239, 68, 68, 0.2);
+    border: 2px solid #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+  }
+
+  .icon-circle.error svg {
+    color: #ef4444;
+  }
+
+  /* Badges */
+  .badge {
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .badge.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  .badge.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  /* Recibo / Ticket Estilo Premium */
+  .receipt-ticket {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--glass-border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 30px;
+    text-align: left;
+    position: relative;
+  }
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed var(--glass-border);
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+
+  .gym-brand {
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--accent-blue);
+    letter-spacing: 0.5px;
+  }
+
+  .receipt-id {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .ticket-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ticket-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+
+  .ticket-row .label {
+    color: var(--text-muted);
+  }
+
+  .ticket-row .val {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .ticket-row.total {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 12px;
+    margin-top: 6px;
+  }
+
+  .ticket-row.total .val {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  /* Sección integrantes */
+  .ticket-members {
+    border-top: 1px dashed var(--glass-border);
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+
+  .ticket-members h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+
+  .ticket-members ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ticket-members li {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .ticket-members li strong {
+    color: var(--text-main);
+  }
+
+  /* Botones */
+  .action-row {
+    width: 100%;
+  }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    background: var(--accent-blue);
+    color: #ffffff;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background: #1d52ff;
+    box-shadow: 0 0 15px var(--accent-blue-glow);
+  }
+
+  /* Spinner */
+  .spinner.large {
+    width: 50px;
+    height: 50px;
+    border-width: 4px;
+  }
+
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--accent-blue);
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .hidden {
+    display: none !important;
+  }
+</style>
+
+<script>
+  import { obtenerPago } from '../lib/mensualidadesApi';
+
+  // Obtener parámetros de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const pagoId = urlParams.get('pago_id');
+  const wompiTxId = urlParams.get('id'); // ID de transacción enviado por Wompi
+
+  // Referencias a los contenedores de estado
+  const loadingState = document.getElementById('loading-state') as HTMLDivElement;
+  const successState = document.getElementById('success-state') as HTMLDivElement;
+  const errorState = document.getElementById('error-state') as HTMLDivElement;
+  const errorMessage = document.getElementById('error-message') as HTMLParagraphElement;
+
+  // Referencias a campos del ticket
+  const receiptId = document.getElementById('receipt-id') as HTMLSpanElement;
+  const receiptName = document.getElementById('receipt-name') as HTMLSpanElement;
+  const receiptCedula = document.getElementById('receipt-cedula') as HTMLSpanElement;
+  const receiptPlan = document.getElementById('receipt-plan') as HTMLSpanElement;
+  const receiptDate = document.getElementById('receipt-date') as HTMLSpanElement;
+  const receiptAmount = document.getElementById('receipt-amount') as HTMLSpanElement;
+  
+  const membersSection = document.getElementById('ticket-members-section') as HTMLDivElement;
+  const membersList = document.getElementById('ticket-members-list') as HTMLUListElement;
+
+  async function verificarPago() {
+    if (!pagoId) {
+      showErrorState('No se proporcionó ningún ID de pago.');
+      return;
+    }
+
+    try {
+      // Llamar al endpoint del plugin para verificar estado
+      const data = await obtenerPago(parseInt(pagoId), wompiTxId || undefined);
+
+      if (data.estado === 'PAGADO') {
+        showSuccessState(data);
+      } else if (data.estado === 'CANCELADO') {
+        showErrorState('Tu pago ha sido rechazado o cancelado.');
+      } else {
+        // En caso de que siga PENDING o sin reporte de aprobación
+        showErrorState('Aún no hemos recibido la aprobación del pago. Si realizaste el pago y se te descontó el dinero, comunícate con soporte.');
+      }
+    } catch (err: any) {
+      showErrorState(err.message || 'Error al obtener la información de pago.');
+    }
+  }
+
+  function showSuccessState(data: any) {
+    loadingState.classList.add('hidden');
+    successState.classList.remove('hidden');
+
+    receiptId.innerText = `#${data.id}`;
+    receiptName.innerText = data.nombres_apellidos;
+    receiptCedula.innerText = data.cedula;
+    receiptPlan.innerText = data.plan_nombre;
+    
+    // Formatear monto
+    const formatAmount = new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0
+    }).format(data.monto_cop);
+    receiptAmount.innerText = `${formatAmount} COP`;
+
+    // Formatear fecha
+    if (data.creado_en) {
+      const fechaObj = new Date(data.creado_en.replace(/-/g, '/'));
+      receiptDate.innerText = fechaObj.toLocaleDateString('es-CO', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    // Inyectar integrantes de ser plan grupal
+    if (data.plan_tipo === 'grupal' && data.integrantes && data.integrantes.length > 0) {
+      membersSection.classList.remove('hidden');
+      membersList.innerHTML = '';
+      
+      data.integrantes.forEach((int: any, idx: number) => {
+        const item = document.createElement('li');
+        item.innerHTML = `<span>Acompañante #${idx + 2}: <strong>${int.nombres_apellidos}</strong></span><span>CC ${int.cedula}</span>`;
+        membersList.appendChild(item);
+      });
+    }
+  }
+
+  function showErrorState(msg: string) {
+    loadingState.classList.add('hidden');
+    errorState.classList.remove('hidden');
+    errorMessage.innerText = msg;
+  }
+
+  // Lanzar la verificación al cargar
+  verificarPago();
+</script>
