@@ -118,7 +118,7 @@ import Header from '../components/Header.astro';
               <input type="file" id="carnet_file" accept="image/*,application/pdf" style="padding: 8px 10px;" />
               <input type="hidden" id="carnet_foto" />
               <div class="err-msg">Debes seleccionar y cargar tu carné estudiantil.</div>
-              <div id="file-preview-container" style="display:none; color:var(--ok); font-size:12.5px; font-weight:600; margin-top:8px; display:flex; align-items:center; gap:6px;">
+              <div id="file-preview-container" style="display:none; color:var(--ok); font-size:12.5px; font-weight:600; margin-top:8px; align-items:center; gap:6px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 ¡Documento cargado correctamente!
               </div>
@@ -139,8 +139,6 @@ import Header from '../components/Header.astro';
           </div>
 
           <div class="status" id="status"></div>
-          <span class="toggle-json" id="toggleJson" style="display:none;">Ver payload enviado ▾</span>
-          <code id="jsonPreview" style="display:none;"></code>
         </div>
       </div>
     </form>
@@ -755,31 +753,6 @@ import Header from '../components/Header.astro';
     color: var(--blue-2);
   }
 
-  code {
-    display: block;
-    background: var(--card-2);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 16px;
-    font-size: 11.5px;
-    color: #a8b3d4;
-    white-space: pre-wrap;
-    word-break: break-all;
-    margin-top: 14px;
-    font-family: 'SFMono-Regular', Consolas, monospace;
-    max-height: 220px;
-    overflow: auto;
-  }
-
-  .toggle-json {
-    font-size: 12px;
-    color: var(--muted);
-    cursor: pointer;
-    margin-top: 10px;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    display: inline-block;
-  }
 </style>
 
 <script>
@@ -844,31 +817,118 @@ import Header from '../components/Header.astro';
   const carnetFotoHidden = document.getElementById('carnet_foto') as HTMLInputElement;
   const filePreview = document.getElementById('file-preview-container') as HTMLDivElement;
 
-  // Manejo de carga de carné
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB para PDFs
+  const MAX_IMG_DIMENSION = 1200; // px máximo de ancho o alto
+  const IMG_QUALITY = 0.7; // calidad JPEG (0-1)
+
+  /**
+   * Comprime una imagen redimensionándola y convirtiéndola a JPEG.
+   * Retorna un string base64 liviano listo para enviar al servidor.
+   */
+  function compressImage(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+
+        let { width, height } = img;
+        // Redimensionar si excede el máximo
+        if (width > MAX_IMG_DIMENSION || height > MAX_IMG_DIMENSION) {
+          if (width > height) {
+            height = Math.round(height * (MAX_IMG_DIMENSION / width));
+            width = MAX_IMG_DIMENSION;
+          } else {
+            width = Math.round(width * (MAX_IMG_DIMENSION / height));
+            height = MAX_IMG_DIMENSION;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { reject(new Error('No se pudo crear canvas.')); return; }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const base64 = canvas.toDataURL('image/jpeg', IMG_QUALITY);
+        resolve(base64);
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('No se pudo leer la imagen.'));
+      };
+
+      img.src = url;
+    });
+  }
+
+  // Manejo de carga de carné con compresión automática
   if (carnetFileInput) {
-    carnetFileInput.addEventListener('change', (e) => {
+    carnetFileInput.addEventListener('change', async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (carnetFotoHidden) {
-          carnetFotoHidden.value = reader.result as string;
+      const isPDF = file.type === 'application/pdf';
+      const isImage = file.type.startsWith('image/');
+
+      if (!isPDF && !isImage) {
+        if (statusEl) {
+          statusEl.className = 'status error show';
+          statusEl.textContent = 'Formato no válido. Sube una imagen (JPG, PNG) o un PDF.';
         }
-        if (filePreview) {
-          filePreview.style.display = 'flex';
+        carnetFileInput.value = '';
+        if (carnetFotoHidden) carnetFotoHidden.value = '';
+        if (filePreview) filePreview.style.display = 'none';
+        return;
+      }
+
+      // PDFs: leer directo pero validar tamaño
+      if (isPDF) {
+        if (file.size > MAX_FILE_SIZE) {
+          if (statusEl) {
+            statusEl.className = 'status error show';
+            statusEl.textContent = `El PDF es demasiado pesado (${(file.size / 1024 / 1024).toFixed(1)} MB). Máximo permitido: 2 MB.`;
+          }
+          carnetFileInput.value = '';
+          if (carnetFotoHidden) carnetFotoHidden.value = '';
+          if (filePreview) filePreview.style.display = 'none';
+          return;
         }
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (carnetFotoHidden) carnetFotoHidden.value = reader.result as string;
+          if (filePreview) filePreview.style.display = 'flex';
+          carnetFileInput.classList.remove('err');
+          const field = carnetFileInput.closest('.field');
+          if (field) field.classList.remove('invalid');
+        };
+        reader.onerror = () => {
+          if (statusEl) {
+            statusEl.className = 'status error show';
+            statusEl.textContent = 'Error al leer el PDF. Intenta con otro archivo.';
+          }
+        };
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      // Imágenes: comprimir automáticamente
+      try {
+        const compressed = await compressImage(file);
+        if (carnetFotoHidden) carnetFotoHidden.value = compressed;
+        if (filePreview) filePreview.style.display = 'flex';
         carnetFileInput.classList.remove('err');
         const field = carnetFileInput.closest('.field');
         if (field) field.classList.remove('invalid');
-      };
-      reader.onerror = () => {
+      } catch (err: any) {
         if (statusEl) {
           statusEl.className = 'status error show';
-          statusEl.textContent = 'Error al cargar el archivo. Intenta con un archivo más ligero.';
+          statusEl.textContent = err.message || 'Error al procesar la imagen. Intenta con un archivo más ligero.';
         }
-      };
-      reader.readAsDataURL(file);
+      }
     });
   }
 
@@ -1218,18 +1278,6 @@ import Header from '../components/Header.astro';
           sidebarSubmitBtn.disabled = false;
           sidebarSubmitBtn.innerHTML = btnHtml;
         }
-      }
-
-      const jsonPreview = document.getElementById('jsonPreview');
-      const toggle = document.getElementById('toggleJson');
-      if (jsonPreview && toggle) {
-        jsonPreview.textContent = JSON.stringify(payload, null, 2);
-        toggle.style.display = 'inline-block';
-        toggle.onclick = () => {
-          const open = jsonPreview.style.display === 'block';
-          jsonPreview.style.display = open ? 'none' : 'block';
-          toggle.textContent = open ? 'Ver payload enviado ▾' : 'Ocultar payload ▴';
-        };
       }
     });
   }
