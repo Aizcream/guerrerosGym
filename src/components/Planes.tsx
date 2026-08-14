@@ -18,7 +18,7 @@ export default function Planes() {
   const currentIndividual = getIndividualPrice();
 
   return (
-    <section className="planes-section">
+    <section className="planes-section" id="planes">
       <div className="planes-container">
         {/* Left: Info */}
         <div className="planes-info">

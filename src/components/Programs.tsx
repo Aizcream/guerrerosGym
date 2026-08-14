@@ -105,7 +105,7 @@ export default function Programs() {
   }, [currentIndex, programs.length]);
 
   return (
-    <section className="programs-section">
+    <section className="programs-section" id="programas">
       <div className="programs-container">
         
         <div className="programs-info">
